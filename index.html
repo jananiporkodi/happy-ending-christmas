@@ -1,0 +1,976 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Christmas Kitchen · Happy Ending</title>
+<meta name="description" content="You're invited into the Happy Ending Christmas kitchen. Churn the ice cream, fill a Christmas box and pour the hot fudge.">
+<meta name="theme-color" content="#8E0F4D">
+<meta property="og:title" content="You’re invited to our Christmas kitchen 🍨">
+<meta property="og:description" content="Churn real ice cream with Raja Rajan, fill your Christmas box and pour the hot fudge. Every step earns a scoop.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://jananiporkodi.github.io/happy-ending-christmas/">
+<meta property="og:image" content="https://jananiporkodi.github.io/happy-ending-christmas/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://jananiporkodi.github.io/happy-ending-christmas/og.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=DM+Sans:wght@400;500;700&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+  :root{--brown:#8E0F4D;--amber:#D6136E;--cream:#FFF5F9;--paper:#FBE0EC;--ink:#3B0F26;--soft:#7A4A60;--gold:#F2B53A;--bg:#FBE0EC}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);transition:background-color .8s;font-family:'DM Sans',system-ui,sans-serif;color:var(--ink);-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
+  #stage{position:absolute;left:50%;top:50%;width:390px;height:844px;transform:translate(-50%,-50%);overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+  .scene{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .6s ease,transform 1s cubic-bezier(.6,0,.3,1),visibility 0s linear .6s}
+  .scene.on{opacity:1;visibility:visible;transition:opacity .6s ease,transform 1s cubic-bezier(.6,0,.3,1)}
+  .scene>svg{position:absolute;left:0;top:0}
+  button{font-family:inherit;cursor:pointer}
+  button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+  .logo{font-family:'Pacifico',cursive;color:var(--amber);font-weight:400}
+  .top{position:absolute;left:14px;right:14px;top:14px;display:flex;justify-content:space-between;align-items:center;z-index:25;pointer-events:none}
+  .top>*{pointer-events:auto}
+  .cups{display:flex;align-items:center;gap:4px;min-height:40px;padding:0 12px;border-radius:999px;background:rgba(255,245,249,.95);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .cups.bump{animation:bump .6s}
+  @keyframes bump{35%{transform:scale(1.15)}}
+  .cup{width:20px;height:20px}
+  .cup .fill{opacity:0;transition:opacity .3s}
+  .cup.on .fill{opacity:1}
+  .tbtns{display:flex;gap:6px}
+  .ibtn{width:44px;height:44px;border:none;border-radius:50%;background:rgba(255,245,249,.95);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .skip{min-height:44px;padding:0 14px;border:none;border-radius:999px;background:rgba(255,245,249,.95);color:var(--soft);font-size:14px;font-weight:500;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  .skip[hidden]{display:none}
+  .sheet{position:absolute;left:0;right:0;bottom:0;top:640px;box-sizing:border-box;padding:18px 20px 24px;background:var(--cream);border-radius:24px 24px 0 0;box-shadow:0 -6px 18px rgba(59,15,38,.15);display:flex;flex-direction:column;gap:10px}
+  .sheet h2{margin:0;font:500 22px/1.2 'Fraunces',serif;color:var(--ink)}
+  .sheet p{margin:0;font-size:14px;line-height:1.4;color:var(--soft)}
+  .cta{display:flex;align-items:center;justify-content:center;min-height:52px;border:none;border-radius:999px;background:var(--amber);color:#fff;font-size:16px;font-weight:700;text-decoration:none;transition:opacity .4s,transform .2s;box-shadow:0 6px 16px rgba(214,19,110,.3)}
+  .cta:active{transform:scale(.97)}
+  .sheet .cta{position:absolute;left:20px;right:20px;bottom:24px}
+  .gone{opacity:0!important;pointer-events:none!important}
+  .bubble{position:absolute;background:#fff;border-radius:14px;box-shadow:0 6px 14px rgba(0,0,0,.22);padding:10px 12px;box-sizing:border-box;font:15px/1.25 'Fraunces',serif;color:var(--ink);opacity:0;transform:translateY(8px) scale(.92);transition:opacity .35s,transform .45s cubic-bezier(.2,.9,.3,1.3);pointer-events:none;z-index:12}
+  .bubble.show{opacity:1;transform:none}
+  .bubble b{color:var(--amber)}
+  .pulse{animation:pulse 1.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes pulse{50%{transform:scale(1.15)}}
+  .wv{transform-box:fill-box;transform-origin:0% 100%;animation:wave 1s ease-in-out infinite}
+  @keyframes wave{0%,100%{transform:rotate(0)}50%{transform:rotate(-18deg)}}
+  .drag{cursor:grab;touch-action:none}
+  .tw{animation:tw 1.6s ease-in-out infinite}
+  @keyframes tw{50%{opacity:.3}}
+  .snow circle{animation:snow 6s linear infinite}
+  @keyframes snow{0%{transform:translateY(-20px);opacity:0}10%{opacity:.9}100%{transform:translateY(260px);opacity:0}}
+  .hint{position:absolute;font-size:14px;font-weight:700;color:var(--amber);pointer-events:none;transition:opacity .4s}
+  .toast{position:absolute;z-index:35;padding:6px 12px;border-radius:999px;background:var(--brown);color:#fff;font-size:15px;font-weight:700;white-space:nowrap;pointer-events:none;transform:translate(-50%,-50%);box-shadow:0 6px 16px rgba(142,15,77,.35);animation:rise 1.6s ease-out forwards}
+  @keyframes rise{0%{opacity:0;margin-top:10px}15%{opacity:1;margin-top:0}70%{opacity:1}100%{opacity:0;margin-top:-50px}}
+  .sub{margin:6px 0 0;width:310px;text-align:center;font-size:15px;line-height:1.35;color:var(--soft)}
+  .sub b{color:var(--amber)}
+  .boxText{position:absolute;left:83px;top:364px;width:224px;height:98px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;pointer-events:none;transition:opacity .4s}
+  .boxText .l1{font:700 18px/1.2 'Fraunces',serif;color:#3B0F26}
+  .boxText .l2{font:500 12.5px/1.3 'Fraunces',serif;color:#D6136E;font-style:italic}
+  .tag{position:absolute;left:40px;top:512px;width:200px;padding:12px 14px 14px;box-sizing:border-box;background:var(--cream);border:2px solid var(--gold);border-radius:10px;transform:rotate(-3deg);box-shadow:0 6px 14px rgba(59,15,38,.18);display:flex;flex-direction:column;gap:6px;z-index:5}
+  .tag label{font:15px 'Fraunces',serif;color:var(--amber)}
+  .tag input{font:16px 'DM Sans',sans-serif;padding:8px 10px;border:1px solid var(--gold);border-radius:6px;background:#fff;color:var(--ink);width:100%;box-sizing:border-box;user-select:text;-webkit-user-select:text}
+  .tray{display:flex;justify-content:space-between;gap:8px}
+  .orn{flex:1;height:64px;border-radius:16px;border:1.5px solid #F3C6D9;background:#fff;display:flex;align-items:center;justify-content:center;padding:0;touch-action:none;transition:opacity .3s,transform .2s}
+  .orn svg{width:44px;height:44px;pointer-events:none}
+  .orn.used{opacity:.3;border-style:dashed;pointer-events:none}
+  .ghost{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;pointer-events:none;z-index:30;filter:drop-shadow(0 6px 8px rgba(0,0,0,.25));transition:left .35s,top .35s,opacity .35s}
+  .ghost.dragging{transition:none}
+  .choice{display:flex;gap:8px}
+  .choice button{flex:1;min-height:56px;border-radius:14px;border:1.5px solid #F3C6D9;background:#fff;color:var(--ink);font-size:13px;font-weight:700;line-height:1.2;padding:4px}
+  .choice button[aria-pressed="true"]{border:2px solid var(--amber);background:#FFEAF3;color:var(--amber)}
+  .meter{height:12px;border-radius:6px;background:#F6D3E2;overflow:hidden}
+  .meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#F27BB0,#8E0F4D);border-radius:6px}
+  #s5{display:flex;flex-direction:column;align-items:center;box-sizing:border-box;padding:72px 24px 20px;gap:12px}
+  .kicker{font-size:13px;font-weight:700;letter-spacing:1px;color:var(--soft)}
+  .card{width:332px;box-sizing:border-box;padding:14px 18px 16px;background:var(--cream);border:3px solid var(--amber);border-radius:18px;box-shadow:0 10px 24px rgba(59,15,38,.18);display:flex;flex-direction:column;align-items:center;gap:10px}
+  .brand{font:22px/1 'Pacifico',cursive;color:var(--amber)}
+  .card h1{margin:0;text-align:center;font:500 27px/1.1 'Fraunces',serif;color:var(--ink)}
+  .cp1{font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--soft)}
+  .tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%}
+  .tile{padding:8px 2px;border-radius:12px;background:var(--paper);display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11.5px;line-height:1.15;text-align:center;color:var(--soft)}
+  .tile svg{width:38px;height:38px}
+  .tile.empty{opacity:.35}
+  .coupon{width:100%;box-sizing:border-box;padding:10px 12px;border:2px dashed var(--amber);border-radius:14px;background:#fff;display:flex;flex-direction:column;gap:6px}
+  .crow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .cp2{font:700 19px/1.15 'Fraunces',serif;color:var(--amber)}
+  .cp3{font-size:13px;color:var(--ink)}
+  .coupon button{min-height:44px;padding:0 12px;border:1.5px solid var(--amber);border-radius:999px;background:var(--cream);color:var(--amber);font-size:13px;font-weight:700;white-space:nowrap}
+  .sign{font:14px 'Fraunces',serif;color:var(--amber);text-align:center}
+  .acts{width:332px;display:flex;flex-direction:column;gap:10px}
+  .row{display:flex;gap:10px}
+  .ghostbtn{flex:1;min-height:48px;border:1.5px solid var(--brown);border-radius:999px;background:var(--cream);color:var(--brown);font-size:14px;font-weight:700}
+  .ghostbtn.wa{border-color:#1F7A4D;color:#1F7A4D}
+  .note{margin:0;text-align:center;font-size:13px;color:#1F7A4D;font-weight:500}
+  .friend{display:flex;gap:8px}
+  .friend[hidden]{display:none}
+  .friend input{flex:1;min-width:0;font:16px 'DM Sans';padding:0 14px;border:1.5px solid #1F7A4D;border-radius:999px;background:#fff;color:var(--ink);user-select:text;-webkit-user-select:text}
+  .friend button{min-height:48px;padding:0 16px;border:none;border-radius:999px;background:#1F7A4D;color:#fff;font-size:14px;font-weight:700}
+  #fx{position:absolute;left:0;top:0;width:390px;height:844px;pointer-events:none;z-index:15}
+  #flash{position:absolute;inset:0;background:#FFF0F6;opacity:0;pointer-events:none;z-index:40;transition:opacity .4s}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  @media (prefers-reduced-motion:reduce){.pulse,.wv,.tw,.snow circle{animation:none}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- ingredients -->
+    <symbol id="in1" viewBox="0 0 40 40"><path d="M14 4 L26 4 L26 10 L30 16 L30 35 Q30 37 28 37 L12 37 Q10 37 10 35 L10 16 L14 10 Z" fill="#FFFFFF" stroke="#C9D3DC" stroke-width="1.5"/><rect x="13" y="2" width="14" height="5" rx="1.5" fill="#E5197B"/><rect x="10" y="20" width="20" height="9" fill="#FBD3E4"/><path d="M14 24 h12" stroke="#E5197B" stroke-width="1.6"/></symbol>
+    <symbol id="in2" viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="26" rx="3" fill="#4A2414"/><g fill="#5E301B"><rect x="9" y="10" width="10" height="10" rx="1.5"/><rect x="21" y="10" width="10" height="10" rx="1.5"/><rect x="9" y="22" width="10" height="10" rx="1.5"/></g><path d="M21 22 L33 22 L33 34 L21 34 Z" fill="#E9D7AC"/><path d="M21 22 L33 34" stroke="#C9A462" stroke-width="1.5"/></symbol>
+    <symbol id="in3" viewBox="0 0 40 40"><path d="M10 34 Q 18 18 31 6" stroke="#3E2416" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M12 31 Q 19 18 29 8" stroke="#6B4A2E" stroke-width="1.3" fill="none"/><g transform="translate(26 26)"><g fill="#FFF3C2"><ellipse cx="0" cy="-6" rx="3.6" ry="6"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="3.6" ry="6" transform="rotate(288)"/></g><circle r="2.6" fill="#F2B53A"/></g></symbol>
+    <symbol id="in4" viewBox="0 0 40 40"><g><ellipse cx="14" cy="22" rx="8" ry="10" transform="rotate(-25 14 22)" fill="#D9C08E"/><ellipse cx="15" cy="21" rx="5" ry="7" transform="rotate(-25 15 21)" fill="#8DB255"/></g><g><ellipse cx="27" cy="18" rx="8" ry="10" transform="rotate(20 27 18)" fill="#D9C08E"/><ellipse cx="26" cy="18" rx="5" ry="7" transform="rotate(20 26 18)" fill="#9CC062"/></g><ellipse cx="22" cy="31" rx="7" ry="5" fill="#C9AE7A"/><ellipse cx="22" cy="30" rx="4.5" ry="3" fill="#86AA4E"/></symbol>
+    <!-- the Christmas flavours, in Happy Ending tubs -->
+    <symbol id="fl1" viewBox="0 0 40 40"><path d="M8 18 L32 18 L29 36 Q20 39 11 36 Z" fill="#fff" stroke="#F3C6D9" stroke-width="1.2"/><g fill="#E5197B" opacity=".85"><circle cx="13" cy="26" r="1.6"/><circle cx="20" cy="30" r="1.6"/><circle cx="27" cy="26" r="1.6"/></g><path d="M7 19 Q 9 8 20 8 Q 31 8 33 19 Z" fill="#9C5568"/><g fill="#5A2232"><circle cx="15" cy="14" r="2"/><circle cx="23" cy="12" r="1.8"/><circle cx="26" cy="16" r="1.6"/></g><rect x="17" y="15" width="5" height="3" rx="1" fill="#E7B07A"/></symbol>
+    <symbol id="fl2" viewBox="0 0 40 40"><path d="M8 18 L32 18 L29 36 Q20 39 11 36 Z" fill="#fff" stroke="#F3C6D9" stroke-width="1.2"/><g fill="#E5197B" opacity=".85"><circle cx="13" cy="26" r="1.6"/><circle cx="20" cy="30" r="1.6"/><circle cx="27" cy="26" r="1.6"/></g><path d="M7 19 Q 9 8 20 8 Q 31 8 33 19 Z" fill="#5A3020"/><g fill="#fff"><rect x="12" y="12" width="4" height="4" rx="1"/><rect x="20" y="10" width="4" height="4" rx="1"/><rect x="24" y="14" width="4" height="4" rx="1"/></g></symbol>
+    <symbol id="fl3" viewBox="0 0 40 40"><path d="M8 18 L32 18 L29 36 Q20 39 11 36 Z" fill="#fff" stroke="#F3C6D9" stroke-width="1.2"/><g fill="#E5197B" opacity=".85"><circle cx="13" cy="26" r="1.6"/><circle cx="20" cy="30" r="1.6"/><circle cx="27" cy="26" r="1.6"/></g><path d="M7 19 Q 9 8 20 8 Q 31 8 33 19 Z" fill="#A9C77A"/><g fill="#fff"><circle cx="14" cy="13" r="1.5"/><circle cx="20" cy="11" r="1.3"/><circle cx="25" cy="14" r="1.5"/><circle cx="18" cy="16" r="1.2"/></g><g fill="#6E8F3E"><circle cx="22" cy="15" r="1.3"/><circle cx="12" cy="17" r="1.1"/></g></symbol>
+    <symbol id="fl4" viewBox="0 0 40 40"><path d="M8 18 L32 18 L29 36 Q20 39 11 36 Z" fill="#fff" stroke="#F3C6D9" stroke-width="1.2"/><g fill="#E5197B" opacity=".85"><circle cx="13" cy="26" r="1.6"/><circle cx="20" cy="30" r="1.6"/><circle cx="27" cy="26" r="1.6"/></g><path d="M7 19 Q 9 8 20 8 Q 31 8 33 19 Z" fill="#FFF7EC"/><path d="M7 19 Q 9 8 20 8 Q 31 8 33 19 Z" fill="none" stroke="#EADBC8"/><g stroke="#D7263D" stroke-width="2" stroke-linecap="round"><path d="M12 15 l3 -3"/><path d="M19 12 l3 -3"/><path d="M24 16 l3 -3"/></g><path d="M27 3 L27 11 Q27 13 25 13" stroke="#D7263D" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M27 3 L27 11" stroke="#fff" stroke-width="1" stroke-dasharray="1.5 1.5"/></symbol>
+  </defs>
+</svg>
+
+<!-- ================= 0 · THE GIFT-BOX INVITATION ================= -->
+<section class="scene on" id="s0" aria-label="A pink Happy Ending Christmas gift box invitation">
+  <svg width="390" height="844" viewBox="0 0 390 844" aria-hidden="true">
+    <defs><linearGradient id="g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF0F6"/><stop offset="1" stop-color="#F8C9DD"/></linearGradient></defs>
+    <rect width="390" height="844" fill="url(#g0)"/>
+    <g fill="#F2A9C8" opacity=".55"><circle cx="40" cy="250" r="3"/><circle cx="350" cy="230" r="4"/><circle cx="70" cy="690" r="3"/><circle cx="330" cy="720" r="3.5"/><circle cx="24" cy="560" r="2.5"/><circle cx="370" cy="470" r="2.5"/></g>
+    <g fill="#fff" opacity=".9"><path d="M36 120 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 z"/><path d="M352 150 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2 z"/><path d="M50 760 l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2 z"/></g>
+    <path d="M0 790 Q 100 770 200 786 T 390 780 L 390 844 L 0 844 Z" fill="#F2A9C8" opacity=".5"/>
+    <!-- the box -->
+    <g transform="translate(195 400)">
+      <ellipse cx="0" cy="82" rx="160" ry="12" fill="#8E0F4D" opacity=".15"/>
+      <rect x="-150" y="-58" width="300" height="136" rx="10" fill="#E5197B"/>
+      <rect x="-150" y="-58" width="300" height="14" fill="#C2125F"/>
+      <rect x="-14" y="-58" width="28" height="136" fill="#F2B53A"/>
+      <rect id="label" x="-122" y="-36" width="244" height="98" rx="14" fill="#FFF5F9" stroke="#F2B53A" stroke-width="2.5" style="transition:opacity .4s"/>
+      <g id="lid" style="transition:transform .9s cubic-bezier(.3,1.3,.5,1)">
+        <rect x="-162" y="-92" width="324" height="40" rx="10" fill="#F0378E"/>
+        <rect x="-16" y="-92" width="32" height="40" fill="#F2B53A"/>
+        <path d="M0 -92 C -30 -128 -70 -118 -52 -96 Z" fill="#F2B53A"/><path d="M0 -92 C 30 -128 70 -118 52 -96 Z" fill="#F2B53A"/>
+        <circle cx="0" cy="-94" r="9" fill="#E0A12E"/>
+      </g>
+    </g>
+    <path id="thread" d="M343 372 C 360 400, 352 470, 338 548" fill="none" stroke="#F2B53A" stroke-width="6" stroke-linecap="round" style="transition:opacity .4s"/>
+    <g id="knob" class="drag">
+      <circle cx="336" cy="562" r="28" fill="#F2B53A" opacity=".25" class="pulse"/>
+      <path d="M336 548 L 326 580 L 336 572 L 346 580 Z" fill="#F2B53A"/><circle cx="336" cy="548" r="7" fill="#E0A12E"/>
+      <circle cx="336" cy="560" r="40" fill="transparent"/>
+    </g>
+    <path id="arrow" d="M368 520 L 368 572 M 359 561 L 368 574 L 377 561" fill="none" stroke="#D6136E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:opacity .3s"/>
+  </svg>
+  <div style="position:absolute;left:0;top:78px;width:390px;display:flex;flex-direction:column;align-items:center;gap:6px">
+    <div class="logo" style="font-size:30px;line-height:1.1">happy ending</div>
+    <h1 id="inviteTitle" style="margin:0;width:330px;text-align:center;font:500 30px/1.12 'Fraunces',serif;color:#3B0F26">You’re invited to our Christmas kitchen</h1>
+    <p class="sub" id="inviteSub">Help us make Christmas ice cream, and every step you finish earns a scoop towards a <b>free scoop</b>.</p>
+  </div>
+  <div class="boxText" id="boxText"><div class="l1">Come make Christmas ice cream with us!</div><div class="l2">From Raja Rajan and the Happy Ending family</div></div>
+  <div class="tag" id="tag">
+    <label for="guestName">This invite is for</label>
+    <input id="guestName" type="text" placeholder="Your name" maxlength="24" autocomplete="given-name" enterkeyhint="done">
+  </div>
+  <div class="hint" id="pullHint" style="left:250px;top:604px;width:120px;text-align:right">Pull the ribbon to open</div>
+</section>
+
+<!-- ================= 1 · THE KITCHEN: INGREDIENTS, THEN CHURN ================= -->
+<section class="scene" id="s1" aria-label="The Happy Ending kitchen with an ice cream churner">
+  <svg width="390" height="640" viewBox="0 0 390 640" aria-hidden="true">
+    <rect width="390" height="640" fill="#FCE4EE"/>
+    <g fill="#F7D2E2"><rect x="0" y="40" width="390" height="2"/><rect x="0" y="100" width="390" height="2"/><rect x="0" y="160" width="390" height="2"/><rect x="0" y="220" width="390" height="2"/><rect x="0" y="280" width="390" height="2"/><rect x="0" y="340" width="390" height="2"/><rect x="0" y="400" width="390" height="2"/>
+      <rect x="64" y="0" width="2" height="470"/><rect x="129" y="0" width="2" height="470"/><rect x="194" y="0" width="2" height="470"/><rect x="259" y="0" width="2" height="470"/><rect x="324" y="0" width="2" height="470"/></g>
+    <!-- shelf of jars -->
+    <rect x="20" y="150" width="200" height="8" rx="2" fill="#8E0F4D"/>
+    <g><rect x="30" y="104" width="34" height="46" rx="6" fill="#fff" opacity=".8"/><rect x="30" y="122" width="34" height="28" rx="4" fill="#4A2414"/><rect x="28" y="98" width="38" height="8" rx="3" fill="#E5197B"/></g>
+    <g><rect x="78" y="104" width="34" height="46" rx="6" fill="#fff" opacity=".8"/><rect x="78" y="118" width="34" height="32" rx="4" fill="#A9C77A"/><rect x="76" y="98" width="38" height="8" rx="3" fill="#E5197B"/></g>
+    <g><rect x="126" y="104" width="34" height="46" rx="6" fill="#fff" opacity=".8"/><rect x="126" y="126" width="34" height="24" rx="4" fill="#F2D6A2"/><rect x="124" y="98" width="38" height="8" rx="3" fill="#E5197B"/></g>
+    <g><rect x="174" y="104" width="34" height="46" rx="6" fill="#fff" opacity=".8"/><rect x="174" y="120" width="34" height="30" rx="4" fill="#F27BB0"/><rect x="172" y="98" width="38" height="8" rx="3" fill="#E5197B"/></g>
+    <!-- window with snow -->
+    <rect x="244" y="60" width="120" height="120" rx="60" fill="#8E0F4D"/><rect x="252" y="68" width="104" height="104" rx="52" fill="#3B1C47"/>
+    <g class="snow" fill="#fff"><circle cx="270" cy="80" r="2"/><circle cx="300" cy="74" r="2.4" style="animation-delay:1.5s"/><circle cx="330" cy="82" r="1.8" style="animation-delay:3s"/><circle cx="286" cy="70" r="1.6" style="animation-delay:4.2s"/></g>
+    <rect x="244" y="60" width="120" height="120" rx="60" fill="none" stroke="#8E0F4D" stroke-width="10"/>
+    <rect x="300" y="64" width="6" height="112" fill="#8E0F4D"/>
+    <!-- floor -->
+    <rect x="0" y="470" width="390" height="170" fill="#F3B9D1"/>
+    <path d="M0 470 L390 470" stroke="#E79BBE" stroke-width="4"/>
+    <!-- the founder -->
+    <g id="founder1"></g>
+    <!-- the churner -->
+    <g id="churner">
+      <ellipse cx="175" cy="630" rx="56" ry="8" fill="#8E0F4D" opacity=".15"/>
+      <rect x="164" y="596" width="22" height="32" fill="#AEB7C1"/>
+      <rect x="168" y="396" width="14" height="80" rx="4" fill="#AEB7C1"/>
+      <rect x="132" y="370" width="86" height="34" rx="10" fill="#E5197B"/>
+      <text x="175" y="393" text-anchor="middle" font-family="Pacifico, cursive" font-size="14" fill="#fff">happy ending</text>
+      <path d="M95 500 Q 100 590 175 596 Q 250 590 255 500 Z" fill="#D7DCE2"/>
+      <path d="M110 512 Q 118 580 160 588" stroke="#fff" stroke-width="4" fill="none" opacity=".6" stroke-linecap="round"/>
+      <ellipse cx="175" cy="500" rx="80" ry="14" fill="#EEF1F4"/>
+      <ellipse cx="175" cy="501" rx="72" ry="10" fill="#9AA3AD"/>
+      <ellipse id="cream" cx="175" cy="502" rx="0" ry="0" fill="#FFFDF7"/>
+      <ellipse id="mound" cx="175" cy="502" rx="56" ry="0" fill="#F7E6C6"/>
+      <line id="paddle" x1="175" y1="470" x2="175" y2="508" stroke="#7E8892" stroke-width="5" stroke-linecap="round"/>
+      <ellipse id="churnGlow" cx="175" cy="500" rx="96" ry="30" fill="none" stroke="#D6136E" stroke-width="2.5" stroke-dasharray="5 6" class="pulse"/>
+      <ellipse id="churnHit" cx="175" cy="510" rx="120" ry="70" fill="transparent"/>
+    </g>
+  </svg>
+  <div class="bubble" id="b1" style="left:150px;top:250px;width:160px"></div>
+  <div class="sheet">
+    <div style="display:flex;align-items:baseline;justify-content:space-between"><h2 id="t1">Add the good stuff</h2><div id="c1" style="font-size:14px;font-weight:700;color:var(--amber)">0 of 4</div></div>
+    <p id="p1">Drag each ingredient into the churner, or just tap it.</p>
+    <div class="tray" id="tray1">
+      <button class="orn" type="button" data-s="in1" aria-label="Rich, high-fat milk"><svg viewBox="0 0 40 40"><use href="#in1"/></svg></button>
+      <button class="orn" type="button" data-s="in2" aria-label="Belgian chocolate"><svg viewBox="0 0 40 40"><use href="#in2"/></svg></button>
+      <button class="orn" type="button" data-s="in3" aria-label="Madagascar vanilla"><svg viewBox="0 0 40 40"><use href="#in3"/></svg></button>
+      <button class="orn" type="button" data-s="in4" aria-label="Italian pistachios"><svg viewBox="0 0 40 40"><use href="#in4"/></svg></button>
+    </div>
+    <button class="cta gone" id="go1" type="button">Fill the Christmas box</button>
+  </div>
+</section>
+
+<!-- ================= 2 · FILL THE CHRISTMAS BOX ================= -->
+<section class="scene" id="s2" aria-label="The packing table with an open Christmas ice cream box">
+  <svg width="390" height="640" viewBox="0 0 390 640" aria-hidden="true">
+    <rect width="390" height="640" fill="#FBD3E4"/>
+    <g fill="#F7C0D7"><circle cx="40" cy="60" r="14"/><circle cx="120" cy="30" r="10"/><circle cx="210" cy="70" r="12"/><circle cx="360" cy="40" r="9"/></g>
+    <!-- bunting -->
+    <path d="M0 24 Q 195 70 390 24" fill="none" stroke="#8E0F4D" stroke-width="1.5"/>
+    <g><path d="M30 31 l16 4 l-10 16 z" fill="#E5197B"/><path d="M78 41 l16 3 l-9 16 z" fill="#F2B53A"/><path d="M128 48 l16 2 l-8 17 z" fill="#2F6B4F"/><path d="M180 51 l16 0 l-8 17 z" fill="#E5197B"/><path d="M232 49 l16 -2 l-7 17 z" fill="#F2B53A"/><path d="M282 43 l16 -3 l-6 16 z" fill="#2F6B4F"/><path d="M332 33 l16 -4 l-6 16 z" fill="#E5197B"/></g>
+    <!-- window -->
+    <rect x="232" y="90" width="128" height="120" rx="6" fill="#8E0F4D"/><rect x="240" y="98" width="112" height="104" fill="#3B1C47"/>
+    <g fill="#fff"><path d="M260 202 l18 -40 l18 40 z" opacity=".9"/><path d="M300 202 l14 -30 l14 30 z" opacity=".8"/></g>
+    <g class="snow" fill="#fff"><circle cx="256" cy="110" r="2"/><circle cx="290" cy="104" r="2.2" style="animation-delay:2s"/><circle cx="330" cy="112" r="1.8" style="animation-delay:3.5s"/></g>
+    <line x1="296" y1="98" x2="296" y2="202" stroke="#8E0F4D" stroke-width="4"/><line x1="240" y1="150" x2="352" y2="150" stroke="#8E0F4D" stroke-width="4"/>
+    <!-- the chef -->
+    <g id="chef2"></g>
+    <!-- table -->
+    <rect x="0" y="456" width="390" height="16" fill="#C2125F"/>
+    <rect x="0" y="472" width="390" height="168" fill="#E79BBE"/>
+    <g fill="#DB8AAF"><rect x="20" y="490" width="160" height="134" rx="6"/><rect x="210" y="490" width="160" height="134" rx="6"/></g>
+    <!-- the open box -->
+    <path d="M30 352 L360 352 L372 300 L42 300 Z" fill="#F0378E"/>
+    <rect x="186" y="300" width="18" height="52" fill="#F2B53A" opacity=".9"/>
+    <rect x="30" y="352" width="330" height="54" rx="4" fill="#A80E55"/>
+    <g id="slots" fill="none" stroke="#FFD6E7" stroke-width="2" stroke-dasharray="4 5" opacity=".9"><circle cx="92" cy="392" r="22"/><circle cx="158" cy="392" r="22"/><circle cx="224" cy="392" r="22"/><circle cx="290" cy="392" r="22"/></g>
+    <g id="plated"></g>
+    <rect x="24" y="404" width="342" height="62" rx="6" fill="#E5197B"/>
+    <rect x="186" y="404" width="18" height="62" fill="#F2B53A"/>
+    <text x="110" y="444" text-anchor="middle" font-family="Pacifico, cursive" font-size="20" fill="#fff">happy</text>
+    <text x="282" y="444" text-anchor="middle" font-family="Pacifico, cursive" font-size="20" fill="#fff">ending</text>
+  </svg>
+  <div class="bubble" id="b2" style="left:130px;top:150px;width:180px"></div>
+  <div class="sheet">
+    <div style="display:flex;align-items:baseline;justify-content:space-between"><h2 id="t2">Fill your Christmas box</h2><div id="c2" style="font-size:14px;font-weight:700;color:var(--amber)">0 of 4</div></div>
+    <p id="p2">Drag each Christmas flavour into the box, or just tap it.</p>
+    <div class="tray" id="tray2">
+      <button class="orn" type="button" data-s="fl1" aria-label="Plum cake crumble"><svg viewBox="0 0 40 40"><use href="#fl1"/></svg></button>
+      <button class="orn" type="button" data-s="fl2" aria-label="Belgian hot cocoa"><svg viewBox="0 0 40 40"><use href="#fl2"/></svg></button>
+      <button class="orn" type="button" data-s="fl3" aria-label="Pistachio snowball"><svg viewBox="0 0 40 40"><use href="#fl3"/></svg></button>
+      <button class="orn" type="button" data-s="fl4" aria-label="Candy cane vanilla"><svg viewBox="0 0 40 40"><use href="#fl4"/></svg></button>
+    </div>
+    <button class="cta gone" id="go2" type="button">Sundae time</button>
+  </div>
+</section>
+
+<!-- ================= 3 · THE HOT FUDGE SUNDAE ================= -->
+<section class="scene" id="s3" aria-label="The sundae counter with a glass and a jug of hot fudge">
+  <svg width="390" height="640" viewBox="0 0 390 640" aria-hidden="true">
+    <rect width="390" height="640" fill="#8E0F4D"/>
+    <g fill="#7E0D44"><rect x="0" y="80" width="390" height="3"/><rect x="0" y="160" width="390" height="3"/><rect x="0" y="240" width="390" height="3"/><rect x="0" y="320" width="390" height="3"/><rect x="0" y="400" width="390" height="3"/><rect x="0" y="480" width="390" height="3"/></g>
+    <rect x="20" y="70" width="150" height="64" rx="8" fill="#3B0F26" stroke="#F2B53A" stroke-width="3"/>
+    <text x="95" y="98" text-anchor="middle" font-family="Fraunces, serif" font-size="16" font-weight="700" fill="#FFF5F9">Hot Fudge</text>
+    <text x="95" y="120" text-anchor="middle" font-family="DM Sans, sans-serif" font-size="12" fill="#F2B53A">poured to order</text>
+    <!-- counter -->
+    <rect x="0" y="606" width="390" height="34" fill="#5E0A33"/>
+    <rect x="0" y="600" width="390" height="8" fill="#F2B53A"/>
+    <!-- the sundae glass -->
+    <g id="sundae">
+      <ellipse cx="195" cy="600" rx="36" ry="6" fill="#E8EEF3" opacity=".9"/>
+      <rect x="190" y="568" width="10" height="32" fill="#E8EEF3" opacity=".85"/>
+      <g id="scoops"></g>
+      <clipPath id="scoopClip"><circle cx="171" cy="534" r="27"/><circle cx="219" cy="534" r="27"/><circle cx="195" cy="505" r="28"/></clipPath>
+      <g clip-path="url(#scoopClip)"><rect id="liq" x="130" y="476" width="130" height="0" fill="#4A2414"/></g>
+      <g id="drips"></g>
+      <path d="M138 540 Q 146 572 195 574 Q 244 572 252 540 L 252 540 Z" fill="#fff" opacity=".28"/>
+      <path d="M138 540 Q 146 572 195 574 Q 244 572 252 540" fill="none" stroke="#fff" stroke-width="2" opacity=".7"/>
+      <circle id="cherry" cx="195" cy="470" r="0" fill="#D7263D"/>
+    </g>
+    <rect id="stream" x="191" y="300" width="8" height="0" rx="4" fill="#4A2414" opacity=".95"/>
+    <!-- the jug, lifted by hand -->
+    <g id="tum" class="drag">
+      <g>
+        <path d="M176 330 L214 330 L210 392 Q195 398 180 392 Z" fill="#CFD5DC"/>
+        <path d="M172 324 L218 324 L214 334 L176 334 Z" fill="#B3BBC4"/>
+        <path d="M172 326 L162 318 L176 324 Z" fill="#B3BBC4"/>
+        <path d="M184 340 L187 386" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+        <path d="M214 340 Q 232 344 228 362 Q 224 376 211 374" fill="none" stroke="#B3BBC4" stroke-width="5"/>
+        <circle cx="232" cy="358" r="12" fill="#A0694A"/><rect x="226" y="364" width="26" height="40" rx="10" fill="#7A1F3A"/>
+        <circle cx="195" cy="362" r="70" fill="transparent"/>
+      </g>
+    </g>
+    <path id="arrow3" d="M272 380 L 272 300 M 263 311 L 272 298 L 281 311" fill="none" stroke="#F2B53A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="hint" id="hint3" style="left:246px;top:240px;width:130px;color:#FFD6E7">Hold the jug and lift it high</div>
+  <div class="bubble" id="b3" style="left:20px;top:170px;width:148px"></div>
+  <div class="sheet">
+    <div style="display:flex;align-items:baseline;justify-content:space-between"><h2 id="t3">Pour your sauce</h2><div id="c3" style="font-size:14px;font-weight:700;color:var(--amber)"></div></div>
+    <div class="choice" id="choice" role="group" aria-label="Choose your sauce">
+      <button type="button" data-d="0" aria-pressed="true">Belgian hot fudge</button>
+      <button type="button" data-d="1" aria-pressed="false">Salted caramel</button>
+      <button type="button" data-d="2" aria-pressed="false">Strawberry</button>
+    </div>
+    <p id="p3">Pour from higher for a glossier coat.</p>
+    <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+    <button class="cta gone" id="go3" type="button">Out to the parlour</button>
+  </div>
+</section>
+
+<!-- ================= 4 · CHRISTMAS AT THE PARLOUR ================= -->
+<section class="scene" id="s4" aria-label="Christmas night outside the Happy Ending parlour">
+  <svg width="390" height="640" viewBox="0 0 390 640" aria-hidden="true">
+    <defs><filter id="glow" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+    <rect width="390" height="640" fill="#2A1035"/>
+    <g fill="#fff"><circle class="tw" cx="30" cy="40" r="1.6"/><circle cx="90" cy="80" r="1.2"/><circle class="tw" cx="160" cy="30" r="1.8" style="animation-delay:.5s"/><circle cx="250" cy="60" r="1.3"/><circle class="tw" cx="330" cy="36" r="1.7" style="animation-delay:1s"/><circle cx="370" cy="110" r="1.2"/></g>
+    <g class="snow" fill="#fff"><circle cx="40" cy="70" r="2"/><circle cx="120" cy="60" r="2.4" style="animation-delay:1s"/><circle cx="210" cy="80" r="1.8" style="animation-delay:2.2s"/><circle cx="300" cy="66" r="2.2" style="animation-delay:3.4s"/><circle cx="360" cy="90" r="1.8" style="animation-delay:4.6s"/></g>
+    <!-- storefront -->
+    <rect x="0" y="200" width="390" height="260" fill="#F7C6DA"/>
+    <rect x="0" y="200" width="390" height="14" fill="#E79BBE"/>
+    <g><path d="M0 214 L390 214 L390 250 L0 250 Z" fill="#fff"/><g fill="#E5197B"><path d="M0 214 h39 v36 h-39z"/><path d="M78 214 h39 v36 h-39z"/><path d="M156 214 h39 v36 h-39z"/><path d="M234 214 h39 v36 h-39z"/><path d="M312 214 h39 v36 h-39z"/></g>
+      <path d="M0 250 q19.5 14 39 0 q19.5 14 39 0 q19.5 14 39 0 q19.5 14 39 0 q19.5 14 39 0 q19.5 14 39 0 q19.5 14 39 0 q19.5 14 39 0 q19.5 14 39 0 q19.5 14 39 0" fill="#E5197B"/></g>
+    <rect x="70" y="140" width="250" height="56" rx="12" fill="#3B0F26" stroke="#5E1A42" stroke-width="3"/>
+    <text id="neon" x="195" y="178" text-anchor="middle" font-family="Pacifico, cursive" font-size="28" fill="#FF6FB2" opacity=".3" style="transition:opacity .8s">happy ending</text>
+    <!-- big window with the tree -->
+    <rect x="96" y="276" width="198" height="170" rx="8" fill="#5E1A42"/>
+    <rect x="104" y="284" width="182" height="154" fill="#3B1C47"/>
+    <rect id="winLight" x="104" y="284" width="182" height="154" fill="#FFD9A8" opacity=".12" style="transition:opacity .8s"/>
+    <g>
+      <path d="M195 300 L240 380 L150 380 Z" fill="#2F6B4F"/><path d="M195 330 L252 420 L138 420 Z" fill="#2F6B4F"/><path d="M195 300 L228 360 L162 360 Z" fill="#3A7D5C"/>
+      <rect x="186" y="420" width="18" height="18" fill="#6B3E22"/>
+    </g>
+    <g id="fairy" style="opacity:.15;transition:opacity .8s">
+      <path d="M170 350 Q 195 362 222 350 M156 384 Q 195 398 236 384 M146 412 Q 195 428 246 412" fill="none" stroke="#F2B53A" stroke-width="1.4"/>
+      <circle class="tw" cx="176" cy="354" r="3.4" fill="#FFD25A"/><circle class="tw" cx="214" cy="354" r="3.4" fill="#FF6FB2" style="animation-delay:.4s"/><circle class="tw" cx="164" cy="389" r="3.4" fill="#9AD4FF" style="animation-delay:.8s"/><circle class="tw" cx="195" cy="393" r="3.4" fill="#FFD25A" style="animation-delay:.2s"/><circle class="tw" cx="228" cy="389" r="3.4" fill="#FF6FB2" style="animation-delay:.6s"/><circle class="tw" cx="156" cy="416" r="3.4" fill="#FF6FB2" style="animation-delay:1s"/><circle class="tw" cx="195" cy="421" r="3.4" fill="#9AD4FF" style="animation-delay:.3s"/><circle class="tw" cx="236" cy="416" r="3.4" fill="#FFD25A" style="animation-delay:.9s"/>
+    </g>
+    <rect x="96" y="276" width="198" height="170" rx="8" fill="none" stroke="#fff" stroke-width="2" opacity=".25"/>
+    <!-- doors -->
+    <rect x="18" y="300" width="56" height="160" rx="4" fill="#C2125F"/><rect x="316" y="300" width="56" height="160" rx="4" fill="#C2125F"/>
+    <circle cx="64" cy="384" r="3" fill="#F2B53A"/><circle cx="326" cy="384" r="3" fill="#F2B53A"/>
+    <!-- pavement -->
+    <rect x="0" y="460" width="390" height="180" fill="#4A2350"/>
+    <rect x="0" y="460" width="390" height="10" fill="#6E3A70"/>
+    <path d="M0 604 Q 50 588 110 600 T 230 598 T 330 594 T 390 598 L390 640 L0 640 Z" fill="#fff" opacity=".9"/>
+    <circle id="starGlow" cx="195" cy="298" r="32" fill="none" stroke="#FFE7A0" stroke-width="2.5" stroke-dasharray="5 6" class="pulse"/>
+    <g id="family"></g>
+    <g id="star" class="drag" transform="translate(195 560)">
+      <circle r="70" fill="#FFE7A0" opacity="0" id="starHalo"/>
+      <polygon points="0,-30 8,-10 29,-9 12,4 18,26 0,13 -18,26 -12,4 -29,-9 -8,-10" fill="#FFE7A0" stroke="#F2B53A" stroke-width="2.5" stroke-linejoin="round"/>
+      <polygon id="starCore" points="0,-18 4.6,-6 17,-5.4 7,2.6 10.8,15.6 0,8 -10.8,15.6 -7,2.6 -17,-5.4 -4.6,-6" fill="#F2B53A" opacity=".5"/>
+      <circle r="46" fill="transparent"/>
+    </g>
+  </svg>
+  <div class="bubble" id="b4" style="left:28px;top:72px;width:210px"></div>
+  <div class="sheet">
+    <h2 id="t4">Light up the Christmas tree</h2>
+    <p id="p4">Drag the star up to the top of the tree in the window.</p>
+    <button class="cta gone" id="go4" type="button">Open your Christmas box</button>
+  </div>
+</section>
+
+<!-- ================= 5 · THE CHRISTMAS BOX CARD ================= -->
+<section class="scene" id="s5" aria-label="Your Happy Ending Christmas box">
+  <div class="kicker">YOUR CHRISTMAS BOX IS READY</div>
+  <div class="card">
+    <div class="brand">happy ending</div>
+    <h1 id="cardName">Merry Christmas</h1>
+    <div class="cp1">THE FLAVOURS IN YOUR BOX</div>
+    <div class="tiles" id="tiles"></div>
+    <div class="cp3" id="drinkLine" style="text-align:center"></div>
+    <div class="coupon">
+      <div class="crow"><div id="cardCups" style="display:flex;gap:3px"></div><div class="cp1" id="cupCount">0 of 5 scoops</div></div>
+      <div class="crow"><div><div class="cp2" id="reward">Earn all 5 scoops</div><div class="cp3" id="codeLine"></div></div><button id="copyBtn" type="button">Copy code</button></div>
+    </div>
+    <div class="sign">Because every celebration deserves a Happy Ending. Raja Rajan &amp; family</div>
+  </div>
+  <div class="acts">
+    <a class="cta" id="shop" href="https://www.instagram.com/happyendingicecreams/" target="_blank" rel="noopener">Find a Happy Ending parlour</a>
+    <div class="row">
+      <button class="ghostbtn" id="saveBtn" type="button">Save card</button>
+      <button class="ghostbtn wa" id="sendBtn" type="button">Send to a friend</button>
+    </div>
+    <p class="note" id="shareNote"></p>
+    <div class="friend" id="friendRow" hidden>
+      <label class="sr" for="friendName">Your friend’s name</label>
+      <input id="friendName" type="text" placeholder="Friend’s name" maxlength="24" enterkeyhint="send">
+      <button id="waBtn" type="button">Send invite</button>
+    </div>
+  </div>
+</section>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="top">
+  <div class="cups" id="cups" aria-live="polite" aria-label="0 of 5 scoops earned"></div>
+  <div class="tbtns">
+    <button class="skip" id="skip" type="button">Skip</button>
+    <button class="ibtn" id="mute" type="button" aria-label="Mute music"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D6136E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path id="waveIco" d="M15.5 8.5a5 5 0 0 1 0 7"/></svg></button>
+  </div>
+</div>
+<div id="flash"></div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const stage = $('stage');
+const qs = new URLSearchParams(location.search);
+const clean = s => (s || '').replace(/[<>&"]/g, '').trim().slice(0, 24);
+let NAME = clean(qs.get('to'));
+const FROM = clean(qs.get('from'));
+const rnd = (a, b) => a + Math.random() * (b - a);
+const NS = 'http://www.w3.org/2000/svg';
+const who = () => NAME || 'friend';
+
+/* ---------- the reward: 5 scoops (placeholder offer for the brand to set) ---------- */
+const OFFER = {
+  cups: 5, headStart: 2, shareCups: 2,
+  full: 'Free scoop', fullNote: 'with any Christmas box at a parlour', fullCode: 'HEXMASSCOOP',
+  bonus: '+ 10% off the box', bonusCode: 'HEXMAS10'
+};
+
+/* ---------- anonymous counters (numbers only, never names), only on the live site ---------- */
+const COUNTER = 'https://abacus.jasoncameron.dev/hit/jananip-happyending-xmas/';
+const LIVE = location.hostname.endsWith('github.io');
+const track = k => { if (!LIVE) return; try { fetch(COUNTER + k, { mode: 'cors', keepalive: true }).catch(() => {}); } catch (e) {} };
+const onceSet = new Set();
+const trackOnce = k => { if (onceSet.has(k)) return; onceSet.add(k); try { if (sessionStorage.getItem('a_' + k)) return; sessionStorage.setItem('a_' + k, 1); } catch (e) {} track(k); };
+trackOnce('visit'); if (NAME) trackOnce('visit_named'); if (FROM) trackOnce('visit_from_friend');
+
+/* ---------- fit the 390 x 844 stage to any screen ---------- */
+let S = 1;
+function fit() { if (!innerWidth || !innerHeight) return; S = Math.min(innerWidth / 390, innerHeight / 844); stage.style.transform = `translate(-50%,-50%) scale(${S})`; }
+addEventListener('resize', fit); fit();
+const sp = e => { const r = stage.getBoundingClientRect(); return { x: (e.clientX - r.left) / S, y: (e.clientY - r.top) / S }; };
+
+/* ---------- characters, drawn in code ---------- */
+const SKIN = '#A86E4C', SKIN2 = '#8D5A3B';
+function raja(x, y, s, wave, hat) {
+  const sh = '#7A1F3A';
+  return `<g transform="translate(${x} ${y}) scale(${s})">
+  <ellipse cx="0" cy="0" rx="36" ry="6" fill="#000" opacity=".18"/>
+  <path d="M-26 -100 L26 -100 L29 -6 L5 -6 L0 -64 L-5 -6 L-29 -6 Z" fill="#2B3550"/>
+  <ellipse cx="-16" cy="-4" rx="11" ry="4.5" fill="#1E1A1A"/><ellipse cx="16" cy="-4" rx="11" ry="4.5" fill="#1E1A1A"/>
+  <rect x="-31" y="-190" width="62" height="96" rx="18" fill="${sh}"/>
+  <path d="M-13 -190 L0 -175 L13 -190 Z" fill="#5E1630"/>
+  <g fill="#F3D9E2"><circle cx="0" cy="-160" r="1.8"/><circle cx="0" cy="-140" r="1.8"/><circle cx="0" cy="-120" r="1.8"/></g>
+  <rect x="-43" y="-182" width="13" height="72" rx="6" fill="${sh}"/><circle cx="-37" cy="-106" r="7" fill="${SKIN}"/>
+  ${wave ? `<g class="wv"><path d="M28 -180 L44 -210 L50 -232" fill="none" stroke="${sh}" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="51" cy="-239" r="7" fill="${SKIN}"/></g>`
+         : `<rect x="30" y="-182" width="13" height="72" rx="6" fill="${sh}"/><circle cx="37" cy="-106" r="7" fill="${SKIN}"/>`}
+  <rect x="-6" y="-202" width="12" height="14" fill="${SKIN}"/>
+  <circle cx="0" cy="-222" r="23" fill="${SKIN}"/>
+  <path d="M-23 -224 Q-23 -250 2 -250 Q24 -249 23 -224 Q16 -240 -2 -238 Q-15 -236 -23 -224 Z" fill="#1B1716"/>
+  <g fill="rgba(255,255,255,.18)" stroke="#2A2222" stroke-width="2"><circle cx="-9" cy="-223" r="6.5"/><circle cx="9" cy="-223" r="6.5"/></g>
+  <path d="M-2.5 -223 L2.5 -223" stroke="#2A2222" stroke-width="2"/>
+  <circle cx="-9" cy="-223" r="2" fill="#1B1716"/><circle cx="9" cy="-223" r="2" fill="#1B1716"/>
+  <path d="M-9 -211 Q0 -215 9 -211 Q0 -208 -9 -211 Z" fill="#1B1716"/>
+  <path d="M-7 -205 Q0 -199 7 -205" fill="none" stroke="#3A1A12" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="-15" cy="-212" r="3.5" fill="#D9707A" opacity=".4"/><circle cx="15" cy="-212" r="3.5" fill="#D9707A" opacity=".4"/>
+  ${hat ? `<path d="M-24 -240 Q-6 -282 30 -266 Q14 -252 23 -238 Z" fill="#C8102E"/><rect x="-27" y="-246" width="54" height="11" rx="5.5" fill="#fff"/><circle cx="31" cy="-266" r="6.5" fill="#fff"/>` : ''}
+  </g>`;
+}
+function chef(x, y, s, wave, hat) {
+  return `<g transform="translate(${x} ${y}) scale(${s})">
+  <ellipse cx="0" cy="0" rx="34" ry="6" fill="#000" opacity=".18"/>
+  <path d="M-26 -100 L26 -100 L29 -6 L-29 -6 Z" fill="#3B2F3A"/>
+  <ellipse cx="-13" cy="-4" rx="10" ry="4" fill="#1E1A1A"/><ellipse cx="13" cy="-4" rx="10" ry="4" fill="#1E1A1A"/>
+  <rect x="-30" y="-184" width="60" height="92" rx="16" fill="#fff" stroke="#F0D5E1" stroke-width="2"/>
+  <path d="M-22 -158 L22 -158 L27 -60 L-27 -60 Z" fill="#E5197B"/>
+  <path d="M-16 -158 L-20 -184 M16 -158 L20 -184" stroke="#E5197B" stroke-width="3"/>
+  <rect x="-10" y="-120" width="20" height="14" rx="3" fill="#C2125F"/>
+  <rect x="-41" y="-178" width="12" height="68" rx="6" fill="#fff" stroke="#F0D5E1"/><circle cx="-35" cy="-106" r="6.5" fill="${SKIN2}"/>
+  ${wave ? `<g class="wv"><path d="M27 -176 L42 -204 L46 -226" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle cx="47" cy="-233" r="6.5" fill="${SKIN2}"/></g>`
+         : `<rect x="29" y="-178" width="12" height="68" rx="6" fill="#fff" stroke="#F0D5E1"/><circle cx="35" cy="-106" r="6.5" fill="${SKIN2}"/>`}
+  <rect x="-6" y="-196" width="12" height="14" fill="${SKIN2}"/>
+  <circle cx="0" cy="-214" r="21" fill="${SKIN2}"/>
+  <path d="M-21 -214 Q-22 -200 -18 -194 L-16 -214 Z M21 -214 Q22 -200 18 -194 L16 -214 Z" fill="#2A1612"/>
+  <circle cx="-7" cy="-214" r="2.2" fill="#2A1612"/><circle cx="7" cy="-214" r="2.2" fill="#2A1612"/>
+  <path d="M-6 -204 Q0 -199 6 -204" fill="none" stroke="#2A1612" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="-12" cy="-207" r="3.2" fill="#D9707A" opacity=".45"/><circle cx="12" cy="-207" r="3.2" fill="#D9707A" opacity=".45"/>
+  ${hat ? `<path d="M-22 -230 Q-4 -272 30 -256 Q14 -244 22 -228 Z" fill="#C8102E"/><rect x="-25" y="-236" width="50" height="11" rx="5.5" fill="#fff"/><circle cx="31" cy="-256" r="6.5" fill="#fff"/>`
+        : `<rect x="-17" y="-246" width="34" height="14" fill="#fff" stroke="#F0D5E1"/><g fill="#fff" stroke="#F0D5E1" stroke-width="1.5"><circle cx="-11" cy="-252" r="10"/><circle cx="11" cy="-252" r="10"/><circle cx="0" cy="-258" r="12"/></g>`}
+  </g>`;
+}
+$('founder1').innerHTML = raja(322, 600, .8, true);
+$('chef2').innerHTML = chef(88, 430, .9, false);
+$('family').innerHTML = raja(86, 560, .8, true, true) + chef(304, 560, .8, false, true);
+
+/* ================= SOUND: an original festive tune, plus effects ================= */
+const Snd = (() => {
+  let ac, master, rev, music, started = false, muted = false, timer, nextT = 0, step = 0, noiseBuf, pourNode;
+  function ctx() {
+    if (!ac) {
+      const C = window.AudioContext || window.webkitAudioContext; if (!C) return null;
+      ac = new C(); master = ac.createGain(); master.connect(ac.destination);
+      rev = ac.createConvolver(); const n = ac.sampleRate * 2.2, b = ac.createBuffer(2, n, ac.sampleRate);
+      for (let c = 0; c < 2; c++) { const d = b.getChannelData(c); for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 3); }
+      rev.buffer = b; const rg = ac.createGain(); rg.gain.value = .28; rev.connect(rg); rg.connect(master);
+      music = ac.createGain(); music.gain.value = .45; music.connect(master);
+    }
+    if (ac.state === 'suspended') ac.resume();
+    return ac;
+  }
+  function tone(f, t, dur, vol, type = 'sine', dest = master, wet = true, attack = .004) {
+    const o = ac.createOscillator(), g = ac.createGain(); o.type = type; o.frequency.value = f;
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + attack); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(g); g.connect(dest); if (wet) g.connect(rev); o.start(t); o.stop(t + dur + .05);
+  }
+  const bell = (f, t, v, dest) => { tone(f, t, 1.4, v, 'sine', dest); tone(f * 2.76, t, .5, v * .3, 'sine', dest); tone(f * 5.4, t, .2, v * .1, 'sine', dest); };
+  function noise(t, dur, vol, type, f0, f1) {
+    if (!noiseBuf) { noiseBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+    const s = ac.createBufferSource(), fl = ac.createBiquadFilter(), g = ac.createGain();
+    s.buffer = noiseBuf; s.loop = true; fl.type = type; fl.frequency.setValueAtTime(f0, t); if (f1) fl.frequency.exponentialRampToValueAtTime(f1, t + dur);
+    g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(vol, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    s.connect(fl); fl.connect(g); g.connect(master); s.start(t); s.stop(t + dur + .05);
+  }
+  const m2f = m => 440 * Math.pow(2, (m - 69) / 12);
+  // an original music-box waltz in C major (3/4, eighth notes); 0 = rest
+  const MEL = [[76,0,79,0,84,0],[83,0,79,0,76,0],[77,0,81,0,84,0],[83,0,0,0,79,0],
+               [76,0,79,0,81,79],[77,0,74,0,71,0],[72,0,76,0,79,0],[84,0,0,0,0,0]];
+  const BASS = [48, 43, 41, 43, 48, 43, 45, 48];
+  const EIGHTH = .2;
+  function sched() {
+    while (nextT < ac.currentTime + .3) {
+      const bar = Math.floor(step / 6) % 8, e = step % 6, m = MEL[bar][e];
+      if (m) bell(m2f(m), nextT, .07, music);
+      if (e === 0) tone(m2f(BASS[bar]), nextT, 1.1, .06, 'triangle', music, true, .02);
+      if (e === 2 || e === 4) { tone(m2f(BASS[bar] + 16), nextT, .3, .025, 'triangle', music); tone(m2f(BASS[bar] + 19), nextT, .3, .02, 'triangle', music); }
+      if (e % 2 === 1) noise(nextT, .06, .012, 'highpass', 7000);
+      nextT += EIGHTH; step++;
+    }
+  }
+  function start() { if (started || !ctx()) return; started = true; nextT = ac.currentTime + .1; timer = setInterval(sched, 90); trackOnce('music'); }
+  document.addEventListener('visibilitychange', () => { if (!ac) return; if (document.hidden) ac.suspend(); else if (!muted) ac.resume(); });
+  const fx = fn => { if (muted || !ctx()) return; fn(ac.currentTime); };
+  return {
+    start, get muted() { return muted; },
+    setMuted(m) { muted = m; if (ac) master.gain.setTargetAtTime(m ? 0 : 1, ac.currentTime, .08); if (m) this.pour(false); if (!m) start(); },
+    plop: () => fx(t => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.setValueAtTime(260, t); o.frequency.exponentialRampToValueAtTime(620, t + .08); g.gain.setValueAtTime(.18, t); g.gain.exponentialRampToValueAtTime(.0001, t + .16); o.connect(g); g.connect(master); o.start(t); o.stop(t + .2); }),
+    churn: () => fx(t => { noise(t, .22, .05, 'bandpass', 500, 320); tone(90, t, .2, .03, 'sine', master, false); }),
+    sparkle: () => fx(t => { [84, 88, 91, 96, 100].forEach((m, i) => bell(m2f(m), t + i * .07, .06)); }),
+    chime: k => fx(t => { bell(m2f([79, 81, 84, 86, 88, 91][k % 6]), t, .09); }),
+    whoosh: () => fx(t => noise(t, .7, .14, 'bandpass', 300, 2200)),
+    bells: () => fx(t => { [[76,0],[76,.25],[76,.5],[76,.9],[76,1.15],[76,1.4],[76,1.8],[79,2.05],[72,2.3],[74,2.6],[76,2.9]].forEach(([m, d]) => { bell(m2f(m + 12), t + d, .07); noise(t + d, .08, .03, 'highpass', 6000); }); }),
+    pour(on) {
+      if (!ac || muted) { if (pourNode && !on) { pourNode.g.gain.setTargetAtTime(0, ac.currentTime, .05); } return; }
+      if (on && !pourNode) {
+        if (!noiseBuf) noise(ac.currentTime, .01, 0, 'lowpass', 500);
+        const s = ac.createBufferSource(), fl = ac.createBiquadFilter(), g = ac.createGain();
+        s.buffer = noiseBuf; s.loop = true; fl.type = 'lowpass'; fl.frequency.value = 700; fl.Q.value = 1.2; g.gain.value = 0;
+        s.connect(fl); fl.connect(g); g.connect(master); s.start(); pourNode = { s, g, fl };
+      }
+      if (pourNode) pourNode.g.gain.setTargetAtTime(on ? .1 : 0, ac.currentTime, .05);
+    },
+    pourPitch(h) { if (pourNode) pourNode.fl.frequency.setTargetAtTime(500 + h * 4, ac.currentTime, .05); }
+  };
+})();
+const unlock = () => { Snd.start(); removeEventListener('pointerdown', unlock); };
+addEventListener('pointerdown', unlock);
+$('mute').addEventListener('click', e => {
+  e.stopPropagation(); const m = !Snd.muted; Snd.setMuted(m);
+  $('mute').setAttribute('aria-label', m ? 'Turn music on' : 'Mute music');
+  $('waveIco').setAttribute('d', m ? 'M16 9l5 6M21 9l-5 6' : 'M15.5 8.5a5 5 0 0 1 0 7');
+});
+
+/* ================= sparkles ================= */
+const cv = $('fx'), cx = cv.getContext('2d'), DPR = Math.min(2, devicePixelRatio || 1);
+cv.width = 390 * DPR; cv.height = 844 * DPR; cx.scale(DPR, DPR);
+const sparks = [];
+function burst(x, y, n, cols, speed = 4) { for (let i = 0; i < n; i++) { const a = rnd(0, Math.PI * 2), v = rnd(.4, 1) * speed; sparks.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, life: rnd(40, 80), age: 0, c: cols[i % cols.length], r: rnd(1.5, 3.2) }); } }
+(function loop() {
+  cx.clearRect(0, 0, 390, 844);
+  for (let i = sparks.length - 1; i >= 0; i--) {
+    const p = sparks[i]; p.age++; p.x += p.vx; p.y += p.vy; p.vy += .06; p.vx *= .98;
+    if (p.age > p.life) { sparks.splice(i, 1); continue; }
+    cx.globalAlpha = 1 - p.age / p.life; cx.fillStyle = p.c; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, 7); cx.fill();
+  }
+  cx.globalAlpha = 1; requestAnimationFrame(loop);
+})();
+const GOLD = ['#FFD25A', '#FFF1C4', '#fff', '#F2B53A'];
+const PINK = ['#E5197B', '#FF8CC0', '#fff', '#F2B53A'];
+
+/* ================= the scoops ================= */
+let cups = 0, shared = false;
+const CUPSVG = '<svg class="cup" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 12 L12 22.5 L16.5 12 Z" fill="none" stroke="#C98B2E" stroke-width="1.6" stroke-linejoin="round"/><path class="fill" d="M7.5 12 L12 22.5 L16.5 12 Z" fill="#F2B53A"/><circle cx="12" cy="9" r="5.6" fill="none" stroke="#D6136E" stroke-width="1.7"/><circle class="fill" cx="12" cy="9" r="5.6" fill="#D6136E"/></svg>';
+$('cups').innerHTML = Array(OFFER.cups).fill(CUPSVG).join('');
+$('cardCups').innerHTML = Array(OFFER.cups).fill(CUPSVG).join('');
+function showCups() {
+  [...$('cups').children].forEach((c, i) => c.classList.toggle('on', i < cups));
+  [...$('cardCups').children].forEach((c, i) => c.classList.toggle('on', i < cups));
+  $('cups').setAttribute('aria-label', `${cups} of ${OFFER.cups} scoops earned`);
+  const full = cups >= OFFER.cups;
+  $('cupCount').textContent = `${cups} of ${OFFER.cups} scoops`;
+  $('reward').textContent = full ? OFFER.full + (shared ? ' ' + OFFER.bonus : '') : `Earn all ${OFFER.cups} for a free scoop`;
+  $('codeLine').innerHTML = full ? `${OFFER.fullNote}<br>Code <b>${shared ? OFFER.bonusCode : OFFER.fullCode}</b>` : `${OFFER.cups - cups} more to go`;
+  $('copyBtn').hidden = !full;
+}
+function earn(n, x, y) {
+  const before = cups; cups = Math.min(OFFER.cups, cups + n); if (cups === before) return;
+  showCups(); track('scoop_' + cups);
+  const o = $('cups'); o.classList.remove('bump'); void o.offsetWidth; o.classList.add('bump');
+  if (x != null) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = cups >= OFFER.cups ? 'Free scoop unlocked! 🍨' : `+${cups - before} scoop${cups - before > 1 ? 's' : ''} 🍨`; t.style.left = x + 'px'; t.style.top = y + 'px'; stage.appendChild(t); setTimeout(() => t.remove(), 1700); }
+  setTimeout(() => Snd.chime(cups), 150);
+}
+
+/* ================= scenes ================= */
+const scenes = [0, 1, 2, 3, 4, 5].map(i => $('s' + i));
+const BG = ['#FBE0EC', '#F3B9D1', '#E79BBE', '#5E0A33', '#4A2350', '#FBE0EC'];
+let cur = 0;
+function go(n, ox, oy) {
+  if (n === cur) return;
+  const a = scenes[cur], b = scenes[n];
+  if (ox != null) { a.style.transformOrigin = `${ox}px ${oy}px`; a.style.transform = 'scale(3.2)'; }
+  a.classList.remove('on'); const prev = cur; cur = n;
+  setTimeout(() => { scenes[prev].style.transform = ''; }, 1100);
+  setTimeout(() => {
+    b.style.transition = 'none'; b.style.transform = 'scale(1.1)'; void b.offsetWidth; b.style.transition = '';
+    b.classList.add('on'); b.style.transform = 'scale(1)';
+    document.body.style.setProperty('--bg', BG[n]);
+    $('skip').hidden = n === 5;
+    enter(n);
+  }, ox != null ? 420 : 200);
+  Snd.whoosh();
+}
+function say(id, html, ms = 3200) { const b = $(id); b.innerHTML = html; b.classList.add('show'); clearTimeout(b._t); if (ms) b._t = setTimeout(() => b.classList.remove('show'), ms); }
+function enter(n) {
+  trackOnce(['', 'reach_kitchen', 'reach_box', 'reach_sundae', 'reach_parlour', 'reach_card'][n] || 'x');
+  if (n === 1) setTimeout(() => say('b1', `Welcome, <b>${who()}</b>! Let’s make Christmas ice cream, the Happy Ending way.`, 4200), 700);
+  if (n === 2) setTimeout(() => say('b2', `Pack your Christmas box, <b>${who()}</b>. Four festive flavours, made fresh.`, 4200), 700);
+  if (n === 3) setTimeout(() => say('b3', 'No sundae is finished without the sauce!', 4200), 700);
+  if (n === 4) setTimeout(() => say('b4', 'One last thing before we celebrate: the star on our tree!', 3500), 700);
+  if (n === 5) buildCard();
+}
+$('skip').addEventListener('click', e => {
+  e.stopPropagation();
+  if (cur === 0) openInvite(true);
+  else if (cur === 1) go(2);
+  else if (cur === 2) go(3);
+  else if (cur === 3) go(4);
+  else if (cur === 4) { if (!starDone) hangStar(); else go(5); }
+});
+function draggable(el, base, onDrop, scaleUp = 1.08) {
+  let start = null, done = false;
+  el.addEventListener('pointerdown', e => { if (done || el._lock) return; e.preventDefault(); try { el.setPointerCapture(e.pointerId); } catch (_) {} start = sp(e); });
+  el.addEventListener('pointermove', e => { if (!start) return; const p = sp(e); el.setAttribute('transform', `translate(${base.x + p.x - start.x} ${base.y + p.y - start.y}) scale(${scaleUp})`); });
+  const up = e => {
+    if (!start) return; const p = sp(e), x = base.x + p.x - start.x, y = base.y + p.y - start.y; start = null;
+    const moved = Math.hypot(x - base.x, y - base.y) > 8;
+    if (onDrop(x, y, moved)) done = true; else el.setAttribute('transform', `translate(${base.x} ${base.y})`);
+  };
+  el.addEventListener('pointerup', up); el.addEventListener('pointercancel', up);
+}
+// a tray of buttons you can drag onto a target, or tap: drop(id, point|null)
+function trayDrag(sel, inZone, drop) {
+  document.querySelectorAll(sel).forEach(btn => {
+    let ghost = null, start = null, moved = false;
+    btn.addEventListener('pointerdown', e => {
+      if (btn.classList.contains('used')) return; e.preventDefault(); try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+      start = sp(e); moved = false; ghost = document.createElement('div'); ghost.className = 'ghost dragging';
+      ghost.innerHTML = `<svg viewBox="0 0 40 40" width="56" height="56"><use href="#${btn.dataset.s}"/></svg>`;
+      ghost.style.left = start.x + 'px'; ghost.style.top = start.y + 'px'; ghost.style.opacity = 0; stage.appendChild(ghost);
+    });
+    btn.addEventListener('pointermove', e => { if (!ghost) return; const p = sp(e); if (!moved && Math.hypot(p.x - start.x, p.y - start.y) > 6) { moved = true; ghost.style.opacity = 1; } ghost.style.left = p.x + 'px'; ghost.style.top = (p.y - 30) + 'px'; });
+    const up = e => {
+      if (!ghost) return; const g = ghost; ghost = null;
+      if (!moved) { g.remove(); return drop(btn.dataset.s, null); }
+      const p = sp(e), at = { x: p.x, y: p.y - 30 };
+      if (inZone(at)) { g.remove(); drop(btn.dataset.s, at); }
+      else { const r = btn.getBoundingClientRect(), s0 = stage.getBoundingClientRect(); g.classList.remove('dragging'); g.style.left = ((r.left + r.width / 2 - s0.left) / S) + 'px'; g.style.top = ((r.top + r.height / 2 - s0.top) / S) + 'px'; g.style.opacity = 0; setTimeout(() => g.remove(), 380); }
+    };
+    btn.addEventListener('pointerup', up); btn.addEventListener('pointercancel', () => { if (ghost) { ghost.remove(); ghost = null; } });
+    btn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); drop(btn.dataset.s, null); } });
+  });
+}
+
+/* ---------- 0: the gift-box invite ---------- */
+const nameInput = $('guestName');
+if (NAME) nameInput.value = NAME;
+if (FROM) {
+  $('inviteTitle').textContent = `${FROM} invited you to our Christmas kitchen`;
+  $('inviteSub').innerHTML = `${FROM} has already earned <b>${OFFER.headStart} scoops</b> for you. Earn the rest for a <b>free scoop</b>.`;
+  cups = OFFER.headStart;
+}
+showCups();
+nameInput.addEventListener('keydown', e => { if (e.key === 'Enter') nameInput.blur(); });
+let opened = false;
+(function ribbon() {
+  const knob = $('knob'), th = $('thread'); let start = null;
+  knob.addEventListener('pointerdown', e => { if (opened) return; e.preventDefault(); nameInput.blur(); try { knob.setPointerCapture(e.pointerId); } catch (_) {} start = sp(e); });
+  knob.addEventListener('pointermove', e => {
+    if (!start || opened) return; const p = sp(e), dx = p.x - start.x, dy = Math.max(-20, p.y - start.y);
+    knob.setAttribute('transform', `translate(${dx * .5} ${dy})`);
+    th.setAttribute('d', `M343 372 C 360 ${400 + dy * .3}, 352 ${470 + dy * .6}, ${338 + dx * .5} ${548 + dy}`);
+    $('arrow').style.opacity = 0;
+    if (Math.hypot(dx, dy) > 95) openInvite();
+  });
+  const up = () => { if (!start || opened) return; start = null; knob.setAttribute('transform', ''); th.setAttribute('d', 'M343 372 C 360 400, 352 470, 338 548'); $('arrow').style.opacity = 1; };
+  knob.addEventListener('pointerup', up); knob.addEventListener('pointercancel', up);
+})();
+function openInvite(quick) {
+  if (opened) return; opened = true;
+  NAME = clean(nameInput.value) || NAME; nameInput.blur();
+  ['knob', 'thread', 'arrow'].forEach(id => $(id).style.opacity = 0);
+  $('pullHint').style.opacity = 0; $('tag').style.transition = 'opacity .5s'; $('tag').style.opacity = 0;
+  $('lid').style.transform = 'translate(40px,-150px) rotate(18deg)';
+  $('boxText').style.opacity = 0; $('label').style.opacity = 0;
+  Snd.sparkle(); burst(195, 360, 70, PINK, 5);
+  setTimeout(() => { $('flash').style.opacity = 1; go(1, 195, 380); setTimeout(() => { $('flash').style.opacity = 0; }, 450); }, quick ? 500 : 1300);
+}
+
+/* ---------- 1: the ingredients, then churn ---------- */
+const INGR = {
+  in1: ['Rich, creamy milk', 'High-fat milk is the secret to our velvety texture.'],
+  in2: ['Belgian chocolate', 'Real Belgian chocolate, never cocoa syrup.'],
+  in3: ['Madagascar vanilla', 'Whole vanilla from Madagascar, the real thing.'],
+  in4: ['Italian pistachios', 'Pistachios from Italy, roasted and ground.']
+};
+const added = [];
+let ingrDone = false, churnDone = false;
+const CC = { x: 175, y: 502 };
+function addIngr(id) {
+  if (added.includes(id) || ingrDone) return;
+  added.push(id); track('ing_' + id);
+  document.querySelector(`#tray1 .orn[data-s="${id}"]`).classList.add('used');
+  const u = document.createElementNS(NS, 'use');
+  u.setAttribute('href', '#' + id); u.setAttribute('x', CC.x - 26); u.setAttribute('y', 330); u.setAttribute('width', 52); u.setAttribute('height', 52);
+  $('churner').appendChild(u);
+  u.animate([{ transform: 'translateY(0)', opacity: 1 }, { transform: 'translateY(150px)', opacity: 0 }], { duration: 520, easing: 'ease-in', fill: 'forwards' });
+  setTimeout(() => {
+    u.remove(); Snd.plop(); burst(CC.x, CC.y, 16, ['#fff', '#FFF1C4', '#F7E6C6'], 2.5);
+    const c = $('cream'); c.setAttribute('rx', (30 + added.length * 10).toFixed(0)); c.setAttribute('ry', (4 + added.length * 1.5).toFixed(1));
+  }, 500);
+  say('b1', `<b>${INGR[id][0]}</b><br>${INGR[id][1]}`, 2600);
+  $('c1').textContent = `${added.length} of 4`;
+  if (added.length === 4) {
+    ingrDone = true;
+    setTimeout(() => {
+      earn(1, 175, 440);
+      $('tray1').style.display = 'none'; $('c1').textContent = '';
+      $('t1').textContent = 'Now churn it'; $('p1').textContent = 'Drag round and round the churner until it turns thick and creamy.';
+      $('churnGlow').style.display = '';
+      say('b1', 'Keep churning! Slow and steady makes it <b>creamy</b>.', 3500);
+    }, 700);
+  }
+}
+$('churnGlow').style.display = 'none';
+trayDrag('#tray1 .orn', at => at.y > 360 && at.y < 620 && at.x > 60 && at.x < 300, id => addIngr(id));
+(function churn() {
+  const hit = $('churnHit'); let last = null, acc = 0, active = false, lastSnd = 0;
+  const A = '#FFFDF7', B = '#F7E6C6';
+  hit.addEventListener('pointerdown', e => { if (!ingrDone || churnDone) return; e.preventDefault(); try { hit.setPointerCapture(e.pointerId); } catch (_) {} active = true; const p = sp(e); last = Math.atan2((p.y - CC.y) * 2.2, p.x - CC.x); $('churnGlow').style.display = 'none'; });
+  hit.addEventListener('pointermove', e => {
+    if (!active || churnDone) return; const p = sp(e), ang = Math.atan2((p.y - CC.y) * 2.2, p.x - CC.x);
+    let d = ang - last; if (d > Math.PI) d -= 2 * Math.PI; if (d < -Math.PI) d += 2 * Math.PI; last = ang; acc += Math.abs(d);
+    const t = Math.min(1, acc / (4 * Math.PI));
+    $('paddle').setAttribute('x2', (CC.x + Math.cos(ang) * 46).toFixed(1)); $('paddle').setAttribute('y2', (CC.y + 4 + Math.sin(ang) * 8).toFixed(1));
+    $('mound').setAttribute('ry', (t * 26).toFixed(1)); $('mound').setAttribute('cy', (CC.y - t * 4).toFixed(1));
+    $('cream').setAttribute('fill', t > .5 ? B : A);
+    if (performance.now() - lastSnd > 240) { lastSnd = performance.now(); Snd.churn(); }
+    if (t >= 1) finishChurn();
+  });
+  const up = () => { active = false; };
+  hit.addEventListener('pointerup', up); hit.addEventListener('pointercancel', up);
+})();
+function finishChurn() {
+  if (churnDone) return; churnDone = true; track('churn');
+  $('mound').setAttribute('ry', 26); $('cream').setAttribute('fill', '#F7E6C6');
+  // a soft swirl on top
+  const sw = document.createElementNS(NS, 'path');
+  sw.setAttribute('d', 'M140 486 Q 175 470 210 486 M150 474 Q 175 462 200 474 M160 464 Q 175 456 190 464');
+  sw.setAttribute('fill', 'none'); sw.setAttribute('stroke', '#EBCFA0'); sw.setAttribute('stroke-width', '3'); sw.setAttribute('stroke-linecap', 'round');
+  $('churner').insertBefore(sw, $('paddle'));
+  Snd.sparkle(); burst(175, 480, 40, PINK, 4); earn(1, 175, 420);
+  say('b1', `That’s real Happy Ending ice cream, <b>${who()}</b>! Now let’s pack your box.`, 0);
+  $('t1').textContent = 'You made the ice cream!'; $('p1').textContent = 'Rich milk and the finest ingredients, churned slow and creamy.';
+  $('go1').classList.remove('gone');
+}
+$('go1').addEventListener('click', () => { $('b1').classList.remove('show'); go(2, 195, 420); });
+
+/* ---------- 2: fill the Christmas box ---------- */
+const FLAV = {
+  fl1: ['Plum cake crumble', 'Christmas plum cake folded into vanilla cream.', '#9C5568'],
+  fl2: ['Belgian hot cocoa', 'Belgian chocolate ice cream with mini marshmallows.', '#5A3020'],
+  fl3: ['Pistachio snowball', 'Italian pistachio with white chocolate snow.', '#A9C77A'],
+  fl4: ['Candy cane vanilla', 'Madagascar vanilla with crushed peppermint candy.', '#FFF7EC']
+};
+const SLOTS = [{ x: 92, y: 392 }, { x: 158, y: 392 }, { x: 224, y: 392 }, { x: 290, y: 392 }];
+const plate = [];
+function plateSweet(id, p) {
+  if (plate.some(q => q.id === id)) return;
+  if (!p) p = SLOTS.find((s, i) => !plate.some(q => q.slot === i)) || SLOTS[0];
+  const slot = SLOTS.reduce((b, s, i) => (!plate.some(q => q.slot === i) && (b < 0 || Math.hypot(s.x - p.x, s.y - p.y) < Math.hypot(SLOTS[b].x - p.x, SLOTS[b].y - p.y))) ? i : b, -1);
+  if (slot < 0) return;
+  const s = SLOTS[slot], u = document.createElementNS(NS, 'use');
+  u.setAttribute('href', '#' + id); u.setAttribute('x', s.x - 36); u.setAttribute('y', s.y - 54); u.setAttribute('width', 72); u.setAttribute('height', 72);
+  u.style.cursor = 'pointer'; u.style.transformBox = 'fill-box'; u.style.transformOrigin = 'center';
+  u.animate([{ transform: 'scale(0)' }, { transform: 'scale(1.25)' }, { transform: 'scale(1)' }], { duration: 420, easing: 'ease-out' });
+  u.addEventListener('click', () => say('b2', `<b>${FLAV[id][0]}</b><br>${FLAV[id][1]}`));
+  $('plated').appendChild(u);
+  $('slots').children[slot].style.display = 'none';
+  plate.push({ id, slot }); track('flavour_' + id);
+  say('b2', `<b>${FLAV[id][0]}</b><br>${FLAV[id][1]}`, 2600);
+  Snd.chime(plate.length); burst(s.x, s.y - 20, 14, PINK, 2);
+  document.querySelector(`#tray2 .orn[data-s="${id}"]`).classList.add('used');
+  $('c2').textContent = `${plate.length} of 4`;
+  if (plate.length === 4) {
+    earn(1, 195, 300);
+    $('t2').textContent = 'What a Christmas box!'; $('p2').textContent = 'Now for the best part: a hot fudge sundae.'; $('c2').textContent = '';
+    $('tray2').style.display = 'none'; $('go2').classList.remove('gone');
+  }
+}
+trayDrag('#tray2 .orn', at => at.y > 320 && at.y < 480, (id, at) => plateSweet(id, at));
+$('go2').addEventListener('click', () => { $('b2').classList.remove('show'); go(3); });
+
+/* ---------- 3: pour the sauce over the sundae ---------- */
+const SAUCE = [['Belgian hot fudge', '#4A2414'], ['salted caramel', '#C77B2E'], ['strawberry', '#E0457B']];
+let drink = 0, fill = 0, gloss = 0, poured = false, holding = false, lift = 0;
+function drawScoops() {
+  const ids = plate.length ? plate.map(p => p.id) : ['fl2', 'fl4', 'fl1'];
+  const col = i => FLAV[ids[i % ids.length]][2];
+  $('scoops').innerHTML = `<circle cx="171" cy="534" r="27" fill="${col(0)}"/><circle cx="219" cy="534" r="27" fill="${col(1)}"/><circle cx="195" cy="505" r="28" fill="${col(2)}"/>`
+    + '<g fill="#fff" opacity=".35"><ellipse cx="160" cy="524" rx="7" ry="4"/><ellipse cx="208" cy="524" rx="7" ry="4"/><ellipse cx="184" cy="494" rx="8" ry="4.5"/></g>';
+}
+drawScoops();
+document.querySelectorAll('#choice button').forEach(b => b.addEventListener('click', () => {
+  if (poured) return; drink = +b.dataset.d;
+  document.querySelectorAll('#choice button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  $('liq').setAttribute('fill', SAUCE[drink][1]); $('stream').setAttribute('fill', SAUCE[drink][1]);
+  Snd.chime(drink + 1);
+}));
+(function pour() {
+  const tum = $('tum'); let startY = 0;
+  tum.addEventListener('pointerdown', e => { if (poured) return; e.preventDefault(); try { tum.setPointerCapture(e.pointerId); } catch (_) {} holding = true; startY = sp(e).y + lift; $('hint3').style.opacity = 0; $('arrow3').style.opacity = 0; Snd.pour(true); });
+  tum.addEventListener('pointermove', e => { if (!holding) return; lift = Math.max(0, Math.min(200, startY - sp(e).y)); });
+  const up = () => { if (!holding) return; holding = false; Snd.pour(false); };
+  tum.addEventListener('pointerup', up); tum.addEventListener('pointercancel', up);
+  let last = performance.now();
+  (function step(now) {
+    const dt = Math.min(50, now - last) / 16.7; last = now;
+    if (cur === 3) {
+      if (!holding) lift = Math.max(0, lift - 4 * dt);
+      $('tum').setAttribute('transform', `translate(0 ${(-lift).toFixed(1)})`);
+      if (holding && !poured) {
+        fill = Math.min(1, fill + dt * (.0035 + lift / 200 * .006));
+        gloss = Math.min(1, gloss + dt * (lift / 200) * .009);
+        Snd.pourPitch(lift);
+      }
+      $('liq').setAttribute('height', (fill * 44).toFixed(1));
+      const s = $('stream');
+      if (holding && !poured) { const top = 394 - lift, bot = 478; s.setAttribute('y', top.toFixed(1)); s.setAttribute('height', Math.max(0, bot - top).toFixed(1)); const w = 8 - lift / 60; s.setAttribute('width', w.toFixed(1)); s.setAttribute('x', (195 - w / 2).toFixed(1)); }
+      else s.setAttribute('height', 0);
+      $('meter').style.width = (fill * 100).toFixed(1) + '%';
+      $('c3').textContent = fill > 0 ? `Gloss ${Math.round(gloss * 100)}%` : '';
+      if (fill >= 1 && !poured) finishPour();
+    }
+    requestAnimationFrame(step);
+  })(last);
+})();
+function finishPour() {
+  poured = true; holding = false; Snd.pour(false); track('pour'); track('sauce_' + drink);
+  const c = SAUCE[drink][1];
+  $('drips').innerHTML = [[156, 528], [176, 524], [195, 522], [214, 524], [234, 528]].map(([x, y]) => `<path d="M${x - 4} ${y - 8} L${x + 4} ${y - 8} L${x + 3} ${y} Q${x} ${y + 6} ${x - 3} ${y} Z" fill="${c}"/>`).join('');
+  const ch = $('cherry'); ch.animate([{ transform: 'translateY(-120px)' }, { transform: 'translateY(0)' }], { duration: 500, easing: 'cubic-bezier(.5,0,.7,1.4)' }); ch.setAttribute('r', 9);
+  Snd.sparkle(); burst(195, 500, 36, PINK, 3.5); earn(1, 195, 430);
+  say('b3', gloss > .5 ? `Picture perfect, <b>${who()}</b>! A glossy ${SAUCE[drink][0]} sundae.` : `Lovely ${SAUCE[drink][0]} sundae! Next time, pour from higher for more gloss.`, 0);
+  $('t3').textContent = 'Your sundae is ready'; $('choice').style.display = 'none';
+  $('p3').textContent = 'Everyone’s gathering outside the parlour.';
+  $('go3').classList.remove('gone');
+}
+$('go3').addEventListener('click', () => { $('b3').classList.remove('show'); go(4); });
+
+/* ---------- 4: light up the Christmas tree ---------- */
+let starDone = false;
+draggable($('star'), { x: 195, y: 560 }, (x, y, moved) => {
+  if (starDone) return true;
+  if (moved && Math.hypot(x - 195, y - 298) > 85) return false;
+  hangStar(); return true;
+}, 1.05);
+function hangStar() {
+  if (starDone) return; starDone = true; track('star');
+  const st = $('star'); st.style.transition = 'transform .6s cubic-bezier(.3,1.4,.5,1)'; st.setAttribute('transform', 'translate(195 298) scale(.8)');
+  $('starGlow').remove();
+  setTimeout(() => {
+    $('starHalo').setAttribute('opacity', '.3'); $('starCore').setAttribute('opacity', '1'); $('starCore').setAttribute('fill', '#FFD25A');
+    $('fairy').style.opacity = 1; $('winLight').style.opacity = '.35';
+    $('neon').style.opacity = 1; $('neon').setAttribute('filter', 'url(#glow)');
+    Snd.bells(); earn(1, 195, 240);
+    [0, 300, 650, 1000].forEach((d, i) => setTimeout(() => burst(rnd(60, 330), rnd(80, 200), 46, i % 2 ? PINK : ['#9AD4FF', '#fff', '#FFD25A'], 4), d));
+    say('b4', `Merry Christmas, <b>${who()}</b>! Because every celebration deserves a happy ending.`, 0);
+    $('t4').textContent = 'Merry Christmas!'; $('p4').textContent = 'Thank you for celebrating with the Happy Ending family.';
+    $('go4').classList.remove('gone');
+  }, 600);
+}
+$('go4').addEventListener('click', () => { $('b4').classList.remove('show'); go(5); });
+
+/* ---------- 5: the Christmas box card ---------- */
+function buildCard() {
+  $('cardName').textContent = `Merry Christmas, ${who()}`;
+  $('tiles').innerHTML = Object.keys(FLAV).map(id => `<div class="tile${plate.some(p => p.id === id) ? '' : ' empty'}"><svg role="img" aria-label="${FLAV[id][0]}" viewBox="0 0 40 40"><use href="#${id}"/></svg>${FLAV[id][0]}</div>`).join('');
+  $('drinkLine').textContent = poured ? `and a ${SAUCE[drink][0]} sundae you poured yourself` : '';
+  showCups(); refreshNote();
+}
+function refreshNote() {
+  $('shareNote').textContent = shared ? (cups >= OFFER.cups ? 'Thank you! Your Christmas box is upgraded.' : `Thank you! ${OFFER.shareCups} more scoops added.`)
+    : cups >= OFFER.cups ? `Invite a friend: they start with ${OFFER.headStart} scoops, and you get ${OFFER.bonus.replace('+ ', '')}`
+    : `Invite a friend: they start with ${OFFER.headStart} scoops, and you get ${OFFER.shareCups} more`;
+}
+$('copyBtn').addEventListener('click', () => {
+  const code = shared ? OFFER.bonusCode : OFFER.fullCode;
+  const done = () => { $('copyBtn').textContent = 'Copied!'; setTimeout(() => $('copyBtn').textContent = 'Copy code', 1800); };
+  if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, done); else done(); track('copy');
+});
+$('shop').addEventListener('click', () => track('outlet'));
+$('sendBtn').addEventListener('click', () => { $('friendRow').hidden = false; $('friendName').focus(); });
+function sendInvite() {
+  const friend = clean($('friendName').value), q = new URLSearchParams();
+  if (friend) q.set('to', friend); if (NAME) q.set('from', NAME);
+  const link = location.href.split(/[?#]/)[0] + (q.toString() ? '?' + q : '');
+  const msg = `🍨 ${NAME ? NAME + ' invited you' : 'You’re invited'} to the Happy Ending Christmas kitchen! Make your own Christmas ice cream. ${OFFER.headStart} scoops are already earned for you. Open your invite: ${link}`;
+  track('share');
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+  if (!shared) { shared = true; setTimeout(() => { if (cups < OFFER.cups) earn(OFFER.shareCups, 195, 470); else { showCups(); const t = document.createElement('div'); t.className = 'toast'; t.textContent = 'Christmas box upgraded! 🎁'; t.style.left = '195px'; t.style.top = '470px'; stage.appendChild(t); setTimeout(() => t.remove(), 1700); } refreshNote(); }, 900); }
+}
+$('waBtn').addEventListener('click', sendInvite);
+$('friendName').addEventListener('keydown', e => { if (e.key === 'Enter') sendInvite(); });
+
+// "Save card": draw the Christmas box as a picture, then share or download it
+$('saveBtn').addEventListener('click', async () => {
+  track('save');
+  try { await document.fonts.load('400 60px Pacifico'); await document.fonts.load('500 60px Fraunces'); await document.fonts.load('700 60px Fraunces'); } catch (e) {}
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const x = c.getContext('2d');
+  const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#FFF0F6'); g.addColorStop(1, '#F8C9DD'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  const rr = (X, Y, w, h, r) => { x.beginPath(); x.moveTo(X + r, Y); x.arcTo(X + w, Y, X + w, Y + h, r); x.arcTo(X + w, Y + h, X, Y + h, r); x.arcTo(X, Y + h, X, Y, r); x.arcTo(X, Y, X + w, Y, r); x.closePath(); };
+  x.shadowColor = 'rgba(59,15,38,.2)'; x.shadowBlur = 40; x.shadowOffsetY = 14; rr(90, 110, 900, 1130, 48); x.fillStyle = '#FFF5F9'; x.fill(); x.shadowColor = 'transparent';
+  x.lineWidth = 9; x.strokeStyle = '#D6136E'; x.stroke();
+  x.textAlign = 'center'; x.fillStyle = '#D6136E'; x.font = '400 64px Pacifico, cursive'; x.fillText('happy ending', W / 2, 240);
+  x.fillStyle = '#3B0F26'; x.font = '500 84px Fraunces, Georgia, serif'; x.fillText('Merry Christmas,', W / 2, 360); x.fillText(who(), W / 2, 458);
+  // the box with the flavours you packed
+  rr(170, 540, 740, 200, 24); x.fillStyle = '#E5197B'; x.fill();
+  x.fillStyle = '#F2B53A'; x.fillRect(W / 2 - 16, 540, 32, 200);
+  Object.keys(FLAV).forEach((id, i) => {
+    if (!plate.some(p => p.id === id)) return; const cx0 = W / 2 - 270 + i * 180;
+    x.fillStyle = '#fff'; x.beginPath(); x.moveTo(cx0 - 58, 610); x.lineTo(cx0 + 58, 610); x.lineTo(cx0 + 46, 700); x.lineTo(cx0 - 46, 700); x.closePath(); x.fill();
+    x.fillStyle = FLAV[id][2]; x.beginPath(); x.arc(cx0, 612, 58, Math.PI, 0); x.fill();
+    x.fillStyle = '#3B0F26'; x.font = '500 26px DM Sans, Arial, sans-serif'; x.fillText(FLAV[id][0], cx0, 790);
+  });
+  x.setLineDash([14, 10]); x.lineWidth = 5; x.strokeStyle = '#D6136E'; rr(220, 860, 640, 170, 24); x.fillStyle = '#fff'; x.fill(); x.stroke(); x.setLineDash([]);
+  const full = cups >= OFFER.cups;
+  x.fillStyle = '#D6136E'; x.font = '700 50px Fraunces, Georgia, serif'; x.fillText(full ? OFFER.full : `${cups} of ${OFFER.cups} scoops earned`, W / 2, 935);
+  x.fillStyle = '#3B0F26'; x.font = '500 30px DM Sans, Arial, sans-serif'; x.fillText(full ? `Code ${shared ? OFFER.bonusCode : OFFER.fullCode}` : 'Earn all 5 for a free scoop', W / 2, 985);
+  x.fillStyle = '#D6136E'; x.font = '500 34px Fraunces, Georgia, serif'; x.fillText('Because every celebration deserves a Happy Ending', W / 2, 1150);
+  c.toBlob(async blob => {
+    const file = new File([blob], 'happy-ending-christmas.png', { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: 'My Christmas box' }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'happy-ending-christmas.png'; document.body.appendChild(a); a.click(); a.remove();
+  }, 'image/png');
+});
+})();
+</script>
+</body>
+</html>
