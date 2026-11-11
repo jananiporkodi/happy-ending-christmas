@@ -451,50 +451,59 @@ const sp = e => { const r = stage.getBoundingClientRect(); return { x: (e.client
 
 /* ---------- characters, drawn in code ---------- */
 const SKIN = '#A86E4C', SKIN2 = '#8D5A3B';
+// shared body: legs, shoes, rounded torso, arms that hang from the shoulders, ears, head
+function body(o) {
+  const { sh, tr, skin, wave } = o;
+  return `<ellipse cx="0" cy="0" rx="38" ry="6" fill="#000" opacity=".16"/>
+  <rect x="-23" y="-104" width="20" height="98" rx="8" fill="${tr}"/><rect x="3" y="-104" width="20" height="98" rx="8" fill="${tr}"/>
+  <ellipse cx="-14" cy="-5" rx="14" ry="6.5" fill="#211A1C"/><ellipse cx="14" cy="-5" rx="14" ry="6.5" fill="#211A1C"/>
+  <path d="M-31 -186 Q-12 -192 0 -192 Q12 -192 31 -186" fill="none" stroke="${sh}" stroke-width="2"/>
+  <path d="M-34 -98 L34 -98 L33 -168 Q32 -188 12 -191 L-12 -191 Q-32 -188 -33 -168 Z" fill="${sh}"/>
+  ${o.line ? `<path d="M-30 -178 Q-40 -146 -40 -112" fill="none" stroke="${o.line}" stroke-width="18" stroke-linecap="round"/>` : ''}
+  <path d="M-30 -178 Q-40 -146 -40 -112" fill="none" stroke="${sh}" stroke-width="15" stroke-linecap="round"/><circle cx="-40" cy="-106" r="8.5" fill="${skin}"/>
+  ${wave ? `<g class="wv">${o.line ? `<path d="M29 -180 Q42 -200 48 -230" fill="none" stroke="${o.line}" stroke-width="18" stroke-linecap="round"/>` : ''}<path d="M29 -180 Q42 -200 48 -230" fill="none" stroke="${sh}" stroke-width="15" stroke-linecap="round"/><circle cx="49" cy="-240" r="8.5" fill="${skin}"/><path d="M45 -247 l-2 -6 M50 -249 l0 -7 M55 -247 l2 -6" stroke="${skin}" stroke-width="3.5" stroke-linecap="round"/></g>`
+         : `${o.line ? `<path d="M30 -178 Q40 -146 40 -112" fill="none" stroke="${o.line}" stroke-width="18" stroke-linecap="round"/>` : ''}<path d="M30 -178 Q40 -146 40 -112" fill="none" stroke="${sh}" stroke-width="15" stroke-linecap="round"/><circle cx="40" cy="-106" r="8.5" fill="${skin}"/>`}
+  <rect x="-8" y="-204" width="16" height="16" rx="4" fill="${skin}"/>
+  <circle cx="-30" cy="-226" r="6.5" fill="${skin}"/><circle cx="30" cy="-226" r="6.5" fill="${skin}"/>
+  <circle cx="0" cy="-228" r="30" fill="${skin}"/>`;
+}
+function face(o) {
+  return `<g fill="#241614"><ellipse cx="-11" cy="-227" rx="3.4" ry="4"/><ellipse cx="11" cy="-227" rx="3.4" ry="4"/></g>
+  <g fill="#fff"><circle cx="-9.8" cy="-228.6" r="1.2"/><circle cx="12.2" cy="-228.6" r="1.2"/></g>
+  <path d="M-16 -238 Q-11 -241 -6 -238 M6 -238 Q11 -241 16 -238" fill="none" stroke="#241614" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M-9 -211 Q0 -203 9 -211" fill="none" stroke="#5A2418" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="-19" cy="-214" r="4.5" fill="#E07A86" opacity=".35"/><circle cx="19" cy="-214" r="4.5" fill="#E07A86" opacity=".35"/>`;
+}
+const santa = top => `<path d="M-31 ${top + 10} Q-12 ${top - 38} 36 ${top - 22} Q20 ${top - 8} 29 ${top + 8} Z" fill="#C8102E"/>
+  <rect x="-33" y="${top}" width="66" height="15" rx="7.5" fill="#fff"/><circle cx="37" cy="${top - 22}" r="8" fill="#fff"/>`;
 function raja(x, y, s, wave, hat) {
-  const sh = '#7A1F3A';
+  const skin = '#B47A55';
   return `<g transform="translate(${x} ${y}) scale(${s})">
-  <ellipse cx="0" cy="0" rx="36" ry="6" fill="#000" opacity=".18"/>
-  <path d="M-26 -100 L26 -100 L29 -6 L5 -6 L0 -64 L-5 -6 L-29 -6 Z" fill="#2B3550"/>
-  <ellipse cx="-16" cy="-4" rx="11" ry="4.5" fill="#1E1A1A"/><ellipse cx="16" cy="-4" rx="11" ry="4.5" fill="#1E1A1A"/>
-  <rect x="-31" y="-190" width="62" height="96" rx="18" fill="${sh}"/>
-  <path d="M-13 -190 L0 -175 L13 -190 Z" fill="#5E1630"/>
-  <g fill="#F3D9E2"><circle cx="0" cy="-160" r="1.8"/><circle cx="0" cy="-140" r="1.8"/><circle cx="0" cy="-120" r="1.8"/></g>
-  <rect x="-43" y="-182" width="13" height="72" rx="6" fill="${sh}"/><circle cx="-37" cy="-106" r="7" fill="${SKIN}"/>
-  ${wave ? `<g class="wv"><path d="M28 -180 L44 -210 L50 -232" fill="none" stroke="${sh}" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="51" cy="-239" r="7" fill="${SKIN}"/></g>`
-         : `<rect x="30" y="-182" width="13" height="72" rx="6" fill="${sh}"/><circle cx="37" cy="-106" r="7" fill="${SKIN}"/>`}
-  <rect x="-6" y="-202" width="12" height="14" fill="${SKIN}"/>
-  <circle cx="0" cy="-222" r="23" fill="${SKIN}"/>
-  <path d="M-23 -224 Q-23 -250 2 -250 Q24 -249 23 -224 Q16 -240 -2 -238 Q-15 -236 -23 -224 Z" fill="#1B1716"/>
-  <g fill="rgba(255,255,255,.18)" stroke="#2A2222" stroke-width="2"><circle cx="-9" cy="-223" r="6.5"/><circle cx="9" cy="-223" r="6.5"/></g>
-  <path d="M-2.5 -223 L2.5 -223" stroke="#2A2222" stroke-width="2"/>
-  <circle cx="-9" cy="-223" r="2" fill="#1B1716"/><circle cx="9" cy="-223" r="2" fill="#1B1716"/>
-  <path d="M-9 -211 Q0 -215 9 -211 Q0 -208 -9 -211 Z" fill="#1B1716"/>
-  <path d="M-7 -205 Q0 -199 7 -205" fill="none" stroke="#3A1A12" stroke-width="1.8" stroke-linecap="round"/>
-  <circle cx="-15" cy="-212" r="3.5" fill="#D9707A" opacity=".4"/><circle cx="15" cy="-212" r="3.5" fill="#D9707A" opacity=".4"/>
-  ${hat ? `<path d="M-24 -240 Q-6 -282 30 -266 Q14 -252 23 -238 Z" fill="#C8102E"/><rect x="-27" y="-246" width="54" height="11" rx="5.5" fill="#fff"/><circle cx="31" cy="-266" r="6.5" fill="#fff"/>` : ''}
+  ${body({ sh: '#7A1F3A', tr: '#2B3550', skin, wave })}
+  <path d="M-12 -191 L0 -176 L12 -191 L7 -191 L0 -183 L-7 -191 Z" fill="#5E1630"/>
+  <g fill="#E9C6D3"><circle cx="0" cy="-164" r="2"/><circle cx="0" cy="-144" r="2"/><circle cx="0" cy="-124" r="2"/></g>
+  <path d="M-31 -230 Q-34 -262 0 -262 Q33 -262 31 -230 Q29 -246 14 -250 Q-2 -243 -18 -248 Q-28 -242 -31 -230 Z" fill="#1B1716"/>
+  ${face()}
+  <g fill="rgba(255,255,255,.2)" stroke="#2A2222" stroke-width="2.2"><circle cx="-11" cy="-227" r="8.5"/><circle cx="11" cy="-227" r="8.5"/></g>
+  <path d="M-2.5 -228 Q0 -230 2.5 -228 M-19.5 -228 L-28 -230 M19.5 -228 L28 -230" fill="none" stroke="#2A2222" stroke-width="2"/>
+  <path d="M-10 -215 Q-5 -220 0 -216.5 Q5 -220 10 -215 Q5 -213.5 0 -214.5 Q-5 -213.5 -10 -215 Z" fill="#1B1716"/>
+  ${hat ? santa(-262) : ''}
   </g>`;
 }
 function chef(x, y, s, wave, hat) {
+  const skin = '#8D5A3B';
   return `<g transform="translate(${x} ${y}) scale(${s})">
-  <ellipse cx="0" cy="0" rx="34" ry="6" fill="#000" opacity=".18"/>
-  <path d="M-26 -100 L26 -100 L29 -6 L-29 -6 Z" fill="#3B2F3A"/>
-  <ellipse cx="-13" cy="-4" rx="10" ry="4" fill="#1E1A1A"/><ellipse cx="13" cy="-4" rx="10" ry="4" fill="#1E1A1A"/>
-  <rect x="-30" y="-184" width="60" height="92" rx="16" fill="#fff" stroke="#F0D5E1" stroke-width="2"/>
-  <path d="M-22 -158 L22 -158 L27 -60 L-27 -60 Z" fill="#E5197B"/>
-  <path d="M-16 -158 L-20 -184 M16 -158 L20 -184" stroke="#E5197B" stroke-width="3"/>
-  <rect x="-10" y="-120" width="20" height="14" rx="3" fill="#C2125F"/>
-  <rect x="-41" y="-178" width="12" height="68" rx="6" fill="#fff" stroke="#F0D5E1"/><circle cx="-35" cy="-106" r="6.5" fill="${SKIN2}"/>
-  ${wave ? `<g class="wv"><path d="M27 -176 L42 -204 L46 -226" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/><circle cx="47" cy="-233" r="6.5" fill="${SKIN2}"/></g>`
-         : `<rect x="29" y="-178" width="12" height="68" rx="6" fill="#fff" stroke="#F0D5E1"/><circle cx="35" cy="-106" r="6.5" fill="${SKIN2}"/>`}
-  <rect x="-6" y="-196" width="12" height="14" fill="${SKIN2}"/>
-  <circle cx="0" cy="-214" r="21" fill="${SKIN2}"/>
-  <path d="M-21 -214 Q-22 -200 -18 -194 L-16 -214 Z M21 -214 Q22 -200 18 -194 L16 -214 Z" fill="#2A1612"/>
-  <circle cx="-7" cy="-214" r="2.2" fill="#2A1612"/><circle cx="7" cy="-214" r="2.2" fill="#2A1612"/>
-  <path d="M-6 -204 Q0 -199 6 -204" fill="none" stroke="#2A1612" stroke-width="1.6" stroke-linecap="round"/>
-  <circle cx="-12" cy="-207" r="3.2" fill="#D9707A" opacity=".45"/><circle cx="12" cy="-207" r="3.2" fill="#D9707A" opacity=".45"/>
-  ${hat ? `<path d="M-22 -230 Q-4 -272 30 -256 Q14 -244 22 -228 Z" fill="#C8102E"/><rect x="-25" y="-236" width="50" height="11" rx="5.5" fill="#fff"/><circle cx="31" cy="-256" r="6.5" fill="#fff"/>`
-        : `<rect x="-17" y="-246" width="34" height="14" fill="#fff" stroke="#F0D5E1"/><g fill="#fff" stroke="#F0D5E1" stroke-width="1.5"><circle cx="-11" cy="-252" r="10"/><circle cx="11" cy="-252" r="10"/><circle cx="0" cy="-258" r="12"/></g>`}
+  ${body({ sh: '#FFFFFF', tr: '#3B2F3A', skin, wave, line: '#EBD0DC' })}
+  <path d="M-34 -98 L34 -98 L33 -168 Q32 -188 12 -191 L-12 -191 Q-32 -188 -33 -168 Z" fill="none" stroke="#EBD0DC" stroke-width="2"/>
+  <path d="M-12 -191 L0 -180 L12 -191" fill="none" stroke="#EBD0DC" stroke-width="2"/>
+  <path d="M-15 -168 L-9 -191 M15 -168 L9 -191" stroke="#E5197B" stroke-width="3.5"/>
+  <path d="M-22 -168 L22 -168 L27 -92 Q0 -86 -27 -92 Z" fill="#E5197B"/>
+  <rect x="-11" y="-132" width="22" height="15" rx="4" fill="#C2125F"/>
+  <path d="M-30 -234 Q-30 -258 0 -259 Q30 -258 30 -234 Q24 -246 0 -247 Q-24 -246 -30 -234 Z" fill="#2A1612"/>
+  ${face()}
+  ${hat ? santa(-260) : `<rect x="-25" y="-264" width="50" height="18" rx="5" fill="#fff" stroke="#EBD0DC" stroke-width="2"/>
+  <g fill="#fff" stroke="#EBD0DC" stroke-width="2"><circle cx="-15" cy="-274" r="13"/><circle cx="15" cy="-274" r="13"/><circle cx="0" cy="-283" r="16"/></g>
+  <rect x="-23" y="-266" width="46" height="8" fill="#fff"/>`}
   </g>`;
 }
 $('founder1').innerHTML = raja(322, 600, .8, true);
